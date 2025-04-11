@@ -1,7 +1,10 @@
 package client;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import util.Constants;
 import util.Logger;
 
@@ -9,6 +12,8 @@ import util.Logger;
  * Client application for the dictionary server.
  */
 public class DictionaryClient {
+    private static ConnectionManager connectionManager;
+
     /**
      * Main method to start the client application.
      *
@@ -16,6 +21,13 @@ public class DictionaryClient {
      */
     public static void main(String[] args) {
         try {
+            // Set system look and feel
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                // Continue with default look and feel
+            }
+
             // Setup logging
             Logger.init("dictionary-client.log");
             Logger.setLevel(Logger.Level.INFO);
@@ -38,19 +50,44 @@ public class DictionaryClient {
                 }
             }
 
-            // Start the client GUI
+            // Create connection manager
             final String finalServerAddress = serverAddress;
             final int finalServerPort = serverPort;
+            connectionManager = new ConnectionManager(finalServerAddress, finalServerPort);
 
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    ClientGUI gui = new ClientGUI(finalServerAddress, finalServerPort);
-                    gui.setVisible(true);
+            // Auto-connect on startup
+            boolean autoConnect = args.length <= 0; // Auto-connect if no args provided
 
-                    Logger.info("Dictionary client started");
-                    Logger.info("Server address: " + finalServerAddress);
-                    Logger.info("Server port: " + finalServerPort);
+            SwingUtilities.invokeLater(() -> {
+                ClientGUI gui = new ClientGUI(connectionManager);
+                gui.setVisible(true);
+
+                // Add shutdown hook for proper cleanup
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    if (connectionManager != null) {
+                        connectionManager.shutdown();
+                    }
+                    Logger.close();
+                }));
+
+                // Also add window listener to handle manual closing
+                gui.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        if (connectionManager != null) {
+                            connectionManager.shutdown();
+                        }
+                        Logger.close();
+                    }
+                });
+
+                Logger.info("Dictionary client started");
+                Logger.info("Server address: " + finalServerAddress);
+                Logger.info("Server port: " + finalServerPort);
+
+                // Auto-connect if specified
+                if (autoConnect) {
+                    new Thread(() -> connectionManager.connect()).start();
                 }
             });
         } catch (IOException e) {

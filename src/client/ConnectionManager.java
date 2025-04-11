@@ -4,23 +4,37 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.ConnectException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import protocol.Request;
 import protocol.Response;
 import util.Constants;
 import util.Logger;
 
 /**
- * Manages the connection to the dictionary server.
+ * Manages the connection to the dictionary server with improved reliability.
  */
 public class ConnectionManager {
-    private String serverAddress;
-    private int serverPort;
+    private final String serverAddress;
+    private final int serverPort;
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private final AtomicBoolean connected = new AtomicBoolean(false);
     private ConnectionListener listener;
+    private ScheduledExecutorService heartbeatExecutor;
+
+    // Added for thread safety
+    private final Lock connectionLock = new ReentrantLock();
+    private final AtomicBoolean isReconnecting = new AtomicBoolean(false);
 
     /**
      * Creates a new ConnectionManager with the specified server address and port.
@@ -31,6 +45,29 @@ public class ConnectionManager {
     public ConnectionManager(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
+        this.heartbeatExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "Heartbeat-Thread");
+            t.setDaemon(true);
+            return t;
+        });
+    }
+
+    /**
+     * Gets the server address.
+     *
+     * @return the server address
+     */
+    public String getServerAddress() {
+        return serverAddress;
+    }
+
+    /**
+     * Gets the server port.
+     *
+     * @return the server port
+     */
+    public int getServerPort() {
+        return serverPort;
     }
 
     /**
@@ -48,29 +85,140 @@ public class ConnectionManager {
      * @return true if connected successfully, false otherwise
      */
     public boolean connect() {
-        if (connected.get()) {
-            return true;
-        }
-
+        connectionLock.lock();
         try {
-            socket = new Socket(serverAddress, serverPort);
-            socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
-
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
-
-            connected.set(true);
-
-            if (listener != null) {
-                listener.onConnected();
+            if (connected.get()) {
+                return true;
             }
 
-            Logger.info("Connected to server: " + serverAddress + ":" + serverPort);
-            return true;
-        } catch (IOException e) {
-            Logger.error("Failed to connect to server", e);
+            Logger.info("Connecting to server: " + serverAddress + ":" + serverPort);
+
+            try {
+                socket = new Socket(serverAddress, serverPort);
+                socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
+
+                // Important: Create output stream first, then input stream
+                out = new ObjectOutputStream(socket.getOutputStream());
+                out.flush(); // Flush header information
+
+                in = new ObjectInputStream(socket.getInputStream());
+
+                connected.set(true);
+
+                if (listener != null) {
+                    listener.onConnected();
+                }
+
+                Logger.info("Connected to server: " + serverAddress + ":" + serverPort);
+
+                // Start heartbeat to detect server disconnection
+                startHeartbeat();
+
+                return true;
+            } catch (ConnectException e) {
+                Logger.error("Connection refused: " + e.getMessage());
+                disconnect();
+                if (listener != null) {
+                    listener.onReconnectFailed();
+                }
+                return false;
+            } catch (IOException e) {
+                Logger.error("Failed to connect to server: " + e.getMessage());
+                disconnect();
+                if (listener != null) {
+                    listener.onReconnectFailed();
+                }
+                return false;
+            }
+        } finally {
+            connectionLock.unlock();
+        }
+    }
+
+    /**
+     * Starts the heartbeat mechanism to detect server disconnections.
+     */
+    private void startHeartbeat() {
+        if (heartbeatExecutor.isShutdown()) {
+            heartbeatExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
+                Thread t = new Thread(r, "Heartbeat-Thread");
+                t.setDaemon(true);
+                return t;
+            });
+        }
+
+        heartbeatExecutor.scheduleAtFixedRate(() -> {
+            if (connected.get()) {
+                try {
+                    // First check basic socket state
+                    if (socket == null || socket.isClosed() || !socket.isConnected() ||
+                            socket.isInputShutdown() || socket.isOutputShutdown()) {
+                        Logger.debug("Socket state check failed in heartbeat");
+                        notifyDisconnection();
+                        return;
+                    }
+
+                    // Then perform an actual protocol request to verify the server is responding
+                    // Just do a simple search for a unlikely word - lightweight but protocol-compliant
+                    Request pingRequest = new Request(Request.OperationType.SEARCH, "_heartbeat_");
+                    Response response = sendHeartbeatRequest(pingRequest);
+
+                    if (response == null) {
+                        Logger.debug("Heartbeat request failed - server not responding");
+                        notifyDisconnection();
+                    }
+                } catch (Exception e) {
+                    Logger.debug("Heartbeat detected disconnection: " + e.getMessage());
+                    notifyDisconnection();
+                }
+            }
+        }, 10, 10, TimeUnit.SECONDS); // Less frequent to reduce load
+    }
+
+    /**
+     * Sends a heartbeat request to check if server is alive.
+     * This is separate from regular sendRequest to avoid recursion and notification issues.
+     */
+    private Response sendHeartbeatRequest(Request request) {
+        connectionLock.lock();
+        try {
+            if (!connected.get() || socket == null || out == null || in == null) {
+                return null;
+            }
+
+            try {
+                socket.setSoTimeout(2000); // Short timeout for heartbeat
+                out.writeObject(request);
+                out.flush();
+                out.reset();
+
+                Object obj = in.readObject();
+                socket.setSoTimeout(Constants.CONNECTION_TIMEOUT); // Reset timeout
+
+                if (obj instanceof Response) {
+                    return (Response) obj;
+                } else {
+                    return null;
+                }
+            } catch (Exception e) {
+                Logger.debug("Heartbeat request exception: " + e.getMessage());
+                return null;
+            }
+        } finally {
+            connectionLock.unlock();
+        }
+    }
+
+    /**
+     * Notifies about disconnection and cleans up resources.
+     */
+    private void notifyDisconnection() {
+        if (connected.compareAndSet(true, false)) {
             disconnect();
-            return false;
+
+            if (listener != null) {
+                listener.onDisconnected();
+            }
         }
     }
 
@@ -78,30 +226,52 @@ public class ConnectionManager {
      * Disconnects from the server.
      */
     public void disconnect() {
-        if (!connected.get()) {
-            return;
-        }
-
+        connectionLock.lock();
         try {
-            if (in != null) {
-                in.close();
+            if (!connected.get() && socket == null) {
+                return;
             }
-            if (out != null) {
-                out.close();
+
+            Logger.info("Disconnecting from server");
+
+            try {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        Logger.debug("Error closing input stream: " + e.getMessage());
+                    }
+                    in = null;
+                }
+
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        Logger.debug("Error closing output stream: " + e.getMessage());
+                    }
+                    out = null;
+                }
+
+                if (socket != null) {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        Logger.debug("Error closing socket: " + e.getMessage());
+                    }
+                    socket = null;
+                }
+            } finally {
+                connected.set(false);
+
+                if (listener != null) {
+                    listener.onDisconnected();
+                }
+
+                Logger.info("Disconnected from server");
             }
-            if (socket != null && !socket.isClosed()) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            Logger.error("Error closing connection", e);
         } finally {
-            connected.set(false);
-
-            if (listener != null) {
-                listener.onDisconnected();
-            }
-
-            Logger.info("Disconnected from server");
+            connectionLock.unlock();
         }
     }
 
@@ -118,54 +288,95 @@ public class ConnectionManager {
             }
         }
 
+        connectionLock.lock();
         try {
-            out.writeObject(request);
-            out.flush();
-
-            Object obj = in.readObject();
-            if (obj instanceof Response) {
-                return (Response) obj;
-            } else {
-                Logger.error("Received invalid response type: " + obj.getClass().getName());
+            if (!connected.get()) {
                 return null;
             }
-        } catch (IOException | ClassNotFoundException e) {
-            Logger.error("Error sending request", e);
-            disconnect();
-            return null;
+
+            try {
+                // Log request (for debugging)
+                Logger.debug("Sending request: " + request.toString());
+
+                socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
+                out.writeObject(request);
+                out.flush();
+                out.reset(); // Important: Reset object cache to avoid stale data
+
+                Object obj = in.readObject();
+                if (obj instanceof Response response) {
+                    // Log response (for debugging)
+                    Logger.debug("Received response: " + response.toString());
+                    return response;
+                } else {
+                    Logger.error("Received invalid response type: " +
+                            (obj != null ? obj.getClass().getName() : "null"));
+                    return null;
+                }
+            } catch (SocketException | SocketTimeoutException e) {
+                Logger.error("Socket error during request: " + e.getMessage());
+                notifyDisconnection();
+                return null;
+            } catch (IOException | ClassNotFoundException e) {
+                Logger.error("Error sending request: " + e.getMessage());
+                notifyDisconnection();
+                return null;
+            }
+        } finally {
+            connectionLock.unlock();
         }
     }
 
     /**
-     * Attempts to reconnect to the server.
+     * Attempts to reconnect to the server with improved retry logic.
      *
      * @return true if reconnected successfully, false otherwise
      */
     private boolean reconnect() {
-        if (listener != null) {
-            listener.onReconnecting();
+        // Avoid multiple threads trying to reconnect simultaneously
+        if (!isReconnecting.compareAndSet(false, true)) {
+            return false;
         }
 
-        for (int attempt = 1; attempt <= Constants.MAX_RECONNECT_ATTEMPTS; attempt++) {
-            Logger.info("Reconnect attempt " + attempt + " of " + Constants.MAX_RECONNECT_ATTEMPTS);
-
-            if (connect()) {
-                return true;
+        try {
+            if (listener != null) {
+                listener.onReconnecting();
             }
 
-            try {
-                Thread.sleep(Constants.RECONNECT_DELAY);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return false;
+            Logger.info("Attempting to reconnect to server");
+
+            // Clean up any existing connection resources
+            disconnect();
+
+            for (int attempt = 1; attempt <= Constants.MAX_RECONNECT_ATTEMPTS; attempt++) {
+                Logger.info("Reconnect attempt " + attempt + " of " + Constants.MAX_RECONNECT_ATTEMPTS);
+
+                if (connect()) {
+                    Logger.info("Reconnection successful");
+                    return true;
+                }
+
+                // If this is not the last attempt, wait before retrying
+                if (attempt < Constants.MAX_RECONNECT_ATTEMPTS) {
+                    try {
+                        Thread.sleep(Constants.RECONNECT_DELAY);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return false;
+                    }
+                }
             }
-        }
 
-        if (listener != null) {
-            listener.onReconnectFailed();
-        }
+            Logger.error("Failed to reconnect after " + Constants.MAX_RECONNECT_ATTEMPTS + " attempts");
 
-        return false;
+            if (listener != null) {
+                listener.onReconnectFailed();
+            }
+
+            return false;
+        } finally {
+            isReconnecting.set(false);
+        }
     }
 
     /**
@@ -175,6 +386,20 @@ public class ConnectionManager {
      */
     public boolean isConnected() {
         return connected.get();
+    }
+
+    /**
+     * Shutdown the connection manager and release resources.
+     */
+    public void shutdown() {
+        disconnect();
+
+        if (heartbeatExecutor != null) {
+            heartbeatExecutor.shutdownNow();
+            heartbeatExecutor = null;
+        }
+
+        Logger.info("Connection manager shut down");
     }
 
     /**

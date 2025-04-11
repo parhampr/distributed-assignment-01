@@ -1,45 +1,45 @@
-java
-	A high-level, class-based, object-oriented programming language
-	An island of Indonesia
-
-dictionary
-	A book or electronic resource that lists the words of a language and gives their meaning
-	A reference book on a particular subject, the items of which are typically arranged in alphabetical order
-
-server
-	A computer or computer program which manages access to a centralized resource or service in a network
-	A person who serves food and drinks in a restaurant or bar
+application
+    A formal request to an authority for something
+    A program or piece of software designed to fulfil a particular purpose
 
 client
-	A person or organization using the services of a lawyer or other professional person or company
-	A computer that retrieves information from a server
-
-socket
-	A natural or artificial hollow into which something fits
-	An endpoint for sending or receiving data across a computer network
-
-thread
-	A fine cord of twisted fibers used in sewing and weaving
-	A sequence of instructions or tasks that can be executed independently by a computer processor
-
-network
-	An arrangement of intersecting horizontal and vertical lines
-	A group or system of interconnected people or things
-
-distributed
-	Spread out or scattered over an area
-	Divided among a number of recipients
-
-system
-	A set of connected things or parts forming a complex whole
-	A set of principles or procedures according to which something is done
-
-database
-	A structured set of data held in a computer, especially one that is accessible in various ways
+    A person or organization using the services of a lawyer or other professional person or company
+    A computer that retrieves information from a server
 
 computer
-	An electronic device for storing and processing data
+    An electronic device for storing and processing data
 
-application
-	A formal request to an authority for something
-	A program or piece of software designed to fulfil a particular purpose
+database
+    A structured set of data held in a computer, especially one that is accessible in various ways
+
+dictionary
+    A book or electronic resource that lists the words of a language and gives their meaning
+    A reference book on a particular subject, the items of which are typically arranged in alphabetical order
+
+distributed
+    Spread out or scattered over an area
+    Divided among a number of recipients
+
+java
+    A high-level, class-based, object-oriented programming language
+    An island of Indonesia
+
+network
+    An arrangement of intersecting horizontal and vertical lines
+    A group or system of interconnected people or things
+
+server
+    A computer or computer program which manages access to a centralized resource or service in a network
+    A person who serves food and drinks in a restaurant or bar
+
+socket
+    A natural or artificial hollow into which something fits
+    An endpoint for sending or receiving data across a computer network
+
+system
+    A set of connected things or parts forming a complex whole
+    A set of principles or procedures according to which something is done
+
+thread
+    A fine cord of twisted fibers used in sewing and weaving
+    A sequence of instructions or tasks that can be executed independently by a computer processor

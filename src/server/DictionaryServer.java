@@ -3,6 +3,11 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import util.Constants;
 import util.Logger;
 
@@ -15,7 +20,8 @@ public class DictionaryServer {
     private final ThreadPool threadPool;
     private final Dictionary dictionary;
     private ServerSocket serverSocket;
-    private boolean running = false;
+    private final AtomicBoolean running = new AtomicBoolean(false);
+    private final List<ClientHandler> activeHandlers = new CopyOnWriteArrayList<>();
 
     /**
      * Creates a new DictionaryServer with the specified port and dictionary file.
@@ -38,19 +44,31 @@ public class DictionaryServer {
      */
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
-        running = true;
+        running.set(true);
 
         Logger.info("Dictionary server started on port " + port);
         Logger.info("Loaded dictionary with " + dictionary.size() + " words");
 
         // Accept client connections
-        while (running) {
+        while (running.get()) {
             try {
                 Socket clientSocket = serverSocket.accept();
                 ClientHandler handler = new ClientHandler(clientSocket, dictionary);
-                threadPool.execute(handler);
+                activeHandlers.add(handler);
+                threadPool.execute(() -> {
+                    try {
+                        handler.run();
+                    } finally {
+                        activeHandlers.remove(handler);
+                    }
+                });
+            } catch (SocketException e) {
+                // Server socket closed, check if we're still running
+                if (running.get()) {
+                    Logger.error("Error accepting client connection", e);
+                }
             } catch (IOException e) {
-                if (running) {
+                if (running.get()) {
                     Logger.error("Error accepting client connection", e);
                 }
             }
@@ -61,9 +79,22 @@ public class DictionaryServer {
      * Stops the server and releases resources.
      */
     public void stop() {
-        running = false;
+        if (!running.compareAndSet(true, false)) {
+            return; // Already stopped
+        }
+
+        Logger.info("Stopping dictionary server...");
+
+        // Close all active client handlers first
+        for (ClientHandler handler : activeHandlers) {
+            handler.close();
+        }
+        activeHandlers.clear();
+
+        // Shutdown thread pool
         threadPool.shutdown();
 
+        // Close server socket
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
@@ -73,6 +104,24 @@ public class DictionaryServer {
         }
 
         Logger.info("Dictionary server stopped");
+    }
+
+    /**
+     * Gets the dictionary used by the server.
+     *
+     * @return the dictionary
+     */
+    public Dictionary getDictionary() {
+        return dictionary;
+    }
+
+    /**
+     * Gets the number of active client connections.
+     *
+     * @return the number of clients
+     */
+    public int getClientCount() {
+        return activeHandlers.size();
     }
 
     /**

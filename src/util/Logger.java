@@ -13,9 +13,9 @@ import java.util.Date;
 public class Logger {
     // Log levels
     public static enum Level {
-        INFO,
-        WARNING,
         ERROR,
+        WARNING,
+        INFO,
         DEBUG
     }
 
@@ -147,7 +147,7 @@ public class Logger {
      * @param message the message to log
      */
     private static void log(Level level, String message) {
-        if (level.ordinal() < currentLevel.ordinal()) {
+        if (level.ordinal() > currentLevel.ordinal()) {
             return;
         }
 
