@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.Serial;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -20,6 +21,7 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
     private static final long serialVersionUID = 1L;
 
     private final ConnectionManager connectionManager;
+    private long lastConnectionToastTime = 0;
 
     // Connection status
     private JLabel statusLabel;
@@ -58,6 +60,8 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
     // Server info
     private final String serverAddress;
     private final int serverPort;
+
+    private JCheckBox autoConnectCheckbox;
 
     /**
      * Creates a new ClientGUI with the provided connection manager.
@@ -164,6 +168,28 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
         statusBox.add(statusLabel);
         statusBox.add(Box.createHorizontalGlue());
 
+        // Add auto-connect checkbox
+        autoConnectCheckbox = new JCheckBox("Auto-Connect", connectionManager.isAutoConnectEnabled());
+        autoConnectCheckbox.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        autoConnectCheckbox.addActionListener(e -> {
+            boolean autoConnect = autoConnectCheckbox.isSelected();
+            connectionManager.setAutoConnect(autoConnect);
+            updateConnectionStatus();
+
+            if (autoConnect) {
+                showToastNotification("Auto-Connect Enabled",
+                        "Will automatically attempt to reconnect if connection is lost",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                showToastNotification("Auto-Connect Disabled",
+                        "Manual connection required if disconnected",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        statusBox.add(autoConnectCheckbox);
+        statusBox.add(Box.createHorizontalStrut(10));
+
         connectButton = new JButton("Connect");
         connectButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
         connectButton.setFocusPainted(false);
@@ -180,6 +206,14 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
      */
     private void toggleConnection() {
         if (connectionManager.isConnected()) {
+            // Force disable auto-connect when manually disconnecting
+            if (connectionManager.isAutoConnectEnabled()) {
+                autoConnectCheckbox.setSelected(false);
+                connectionManager.setAutoConnect(false);
+                showToastNotification("Auto-Connect Disabled",
+                        "Auto-connect disabled due to manual disconnection",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
             connectionManager.disconnect();
         } else {
             new Thread(() -> {
@@ -190,10 +224,14 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
                     statusIconLabel.setIcon(connectingIcon);
                 });
 
-                connectionManager.connect();
+                boolean success = connectionManager.connect();
 
                 SwingUtilities.invokeLater(() -> {
                     connectButton.setEnabled(true);
+                    if (!success && !connectionManager.isAutoConnectEnabled()) {
+                        // Only show a toast if the manual connection failed and we're not auto-reconnecting
+                        showToastNotification("Connection Failed", "Failed to connect to server: " + serverAddress + ":" + serverPort, JOptionPane.ERROR_MESSAGE);
+                    }
                 });
             }).start();
         }
@@ -449,60 +487,86 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
     }
 
     /**
-     * Performs a search operation.
+     * Performs a dictionary search operation.
+     * Validates input, sends request to server, and displays results.
      */
     private void performSearch() {
-        String word = searchWordField.getText().trim();
+        final String word = searchWordField.getText().trim().toLowerCase();
         if (word.isEmpty()) {
-            showMessage("Please enter a word to search");
+            showToastNotification("Word Search", "Please enter a word to search", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
+        // Visual feedback for search in progress
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         searchButton.setEnabled(false);
 
         new Thread(() -> {
-            Request request = new Request(Request.OperationType.SEARCH, word);
-            Response response = connectionManager.sendRequest(request);
+            try {
+                Request request = new Request(Request.OperationType.SEARCH, word);
+                Response response = connectionManager.sendRequest(request);
 
-            SwingUtilities.invokeLater(() -> {
-                setCursor(Cursor.getDefaultCursor());
-                searchButton.setEnabled(connectionManager.isConnected());
+                SwingUtilities.invokeLater(() -> {
+                    // Reset UI state
+                    setCursor(Cursor.getDefaultCursor());
+                    searchButton.setEnabled(connectionManager.isConnected());
 
-                if (response == null) {
-                    showError("Failed to get response from server");
-                    return;
-                }
-
-                if (response.getStatus() == Response.StatusCode.SUCCESS) {
-                    String[] meanings = response.getMeanings();
-                    StringBuilder result = new StringBuilder();
-
-                    if (meanings.length == 0) {
-                        searchResultArea.setText("No meanings found for \"" + word + "\"");
+                    if (response == null) {
+                        showToastNotification("Search Error",
+                                "Failed to receive response from server for word: \"" + word + "\"",
+                                JOptionPane.ERROR_MESSAGE);
                         return;
                     }
 
-                    for (int i = 0; i < meanings.length; i++) {
-                        result.append(i + 1).append(". ").append(meanings[i]).append("\n\n");
-                    }
-
-                    searchResultArea.setText(result.toString());
-                    searchResultArea.setCaretPosition(0);
-                } else {
-                    searchResultArea.setText("No meanings found for \"" + word + "\"");
-                }
-            });
+                    displaySearchResults(word, response);
+                });
+            } catch (Exception e) {
+                SwingUtilities.invokeLater(() -> {
+                    setCursor(Cursor.getDefaultCursor());
+                    searchButton.setEnabled(connectionManager.isConnected());
+                    showError("Search Error" + "An error occurred while searching for \"" + word + "\": " + e.getMessage());
+                });
+            }
         }).start();
     }
 
     /**
+     * Displays search results in the UI.
+     *
+     * @param word the searched word
+     * @param response the server response
+     */
+    private void displaySearchResults(String word, Response response) {
+        if (response.getStatus() == Response.StatusCode.SUCCESS) {
+            String[] meanings = response.getMeanings();
+
+            if (meanings == null || meanings.length == 0) {
+                searchResultArea.setText("No meanings found for \"" + word + "\"");
+                return;
+            }
+
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < meanings.length; i++) {
+                result.append(i + 1).append(". ").append(meanings[i]).append("\n\n");
+            }
+
+            searchResultArea.setText(result.toString());
+            searchResultArea.setCaretPosition(0);
+        } else {
+            showToastNotification("Search Result",
+                    "Problem finding \"" + word + "\": " + response.getMessage(),
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /**
      * Adds a new word to the dictionary.
+     * Validates input, sends request to server, and handles the response.
      */
     private void addWord() {
-        String word = addWordField.getText().trim();
+        final String word = addWordField.getText().trim().toLowerCase();
         if (word.isEmpty()) {
-            showMessage("Please enter a word to add");
+            showToastNotification("Add Word", "Please enter a word to add", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -516,27 +580,40 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
         addButton.setEnabled(false);
 
         new Thread(() -> {
-            String[] meanings = meaningsText.split("\n");
-            Request request = new Request(Request.OperationType.ADD, word, meanings);
-            Response response = connectionManager.sendRequest(request);
+            try {
+                // Filter out empty lines and trim each meaning
+                String[] meanings = Arrays.stream(meaningsText.split("\n"))
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .toArray(String[]::new);
 
-            SwingUtilities.invokeLater(() -> {
-                setCursor(Cursor.getDefaultCursor());
-                addButton.setEnabled(connectionManager.isConnected());
+                Request request = new Request(Request.OperationType.ADD, word, meanings);
+                Response response = connectionManager.sendRequest(request);
 
-                if (response == null) {
-                    showError("Failed to get response from server");
-                    return;
-                }
+                SwingUtilities.invokeLater(() -> {
+                    setCursor(Cursor.getDefaultCursor());
+                    addButton.setEnabled(connectionManager.isConnected());
 
-                if (response.getStatus() == Response.StatusCode.SUCCESS) {
-                    showMessage("Word \"" + word + "\" added successfully");
-                    addWordField.setText("");
-                    addMeaningsArea.setText("");
-                } else {
-                    showError(response.getMessage());
-                }
-            });
+                    if (response == null) {
+                        showError("Failed to get response from server while adding \"" + word + "\"");
+                        return;
+                    }
+
+                    if (response.getStatus() == Response.StatusCode.SUCCESS) {
+                        showToastNotification("New Word Added: "+word, "Successfully added new word with " + meanings.length + " meaning(s)", JOptionPane.INFORMATION_MESSAGE);
+                        addWordField.setText("");
+                        addMeaningsArea.setText("");
+                    } else {
+                        showError("Failed to add \"" + word + "\": " + response.getMessage());
+                    }
+                });
+            } catch (Exception e) {
+                SwingUtilities.invokeLater(() -> {
+                    setCursor(Cursor.getDefaultCursor());
+                    addButton.setEnabled(connectionManager.isConnected());
+                    showError("An error occurred while adding word \"" + word + "\": " + e.getMessage());
+                });
+            }
         }).start();
     }
 
@@ -544,9 +621,9 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
      * Removes a word from the dictionary.
      */
     private void removeWord() {
-        String word = removeWordField.getText().trim();
+        String word = removeWordField.getText().trim().toLowerCase();
         if (word.isEmpty()) {
-            showMessage("Please enter a word to remove");
+            showToastNotification("Add Word", "Please enter a word to remove", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -592,9 +669,9 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
      * Gets meanings for a word.
      */
     private void getMeanings() {
-        String word = updateWordField.getText().trim();
+        String word = updateWordField.getText().trim().toLowerCase();
         if (word.isEmpty()) {
-            showMessage("Please enter a word");
+            showToastNotification("Add Word", "Please enter a word to update", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -755,25 +832,36 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
      */
     private void updateConnectionStatus() {
         boolean connected = connectionManager.isConnected();
+        boolean autoConnect = connectionManager.isAutoConnectEnabled();
 
         if (connected) {
             statusLabel.setText("Connected to server");
             statusLabel.setForeground(new Color(0, 128, 0)); // Dark green
             statusIconLabel.setIcon(connectedIcon);
             connectButton.setText("Disconnect");
+            connectButton.setEnabled(true);
         } else {
-            statusLabel.setText("Not connected");
+            if (autoConnect) {
+                statusLabel.setText("Not connected (auto-connect enabled)");
+            } else {
+                statusLabel.setText("Not connected");
+            }
             statusLabel.setForeground(Color.RED);
             statusIconLabel.setIcon(disconnectedIcon);
-            connectButton.setText("Connect");
+            connectButton.setText("Force Connect");
+            connectButton.setEnabled(true);
         }
 
+        // Enable/disable operation buttons based on connection status
         searchButton.setEnabled(connected);
         addButton.setEnabled(connected);
         removeButton.setEnabled(connected);
         getMeaningsButton.setEnabled(connected);
         addMeaningButton.setEnabled(connected);
         updateMeaningButton.setEnabled(connected && existingMeaningsCombo.getItemCount() > 0);
+
+        // Ensure checkbox reflects current state
+        autoConnectCheckbox.setSelected(autoConnect);
     }
 
     /**
@@ -789,7 +877,7 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
                 // Create undecorated toast panel
                 JDialog toast = new JDialog(this);
                 toast.setUndecorated(true);
-                toast.setSize(300, 80);
+                toast.setSize(400, 80);
 
                 // Create a rounded panel with shadow effect for the toast
                 JPanel toastPanel = new JPanel(new BorderLayout()) {
@@ -897,7 +985,7 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
 
         // Calculate position - 20px margin from right and bottom edges
         int x = screenSize.width - toast.getWidth() - 20 - screenInsets.right;
-        int y = screenSize.height - toast.getHeight() - 20 - screenInsets.bottom;
+        int y = screenInsets.bottom + 20;
 
         toast.setLocation(x, y);
     }
@@ -916,9 +1004,15 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
     public void onDisconnected() {
         SwingUtilities.invokeLater(() -> {
             updateConnectionStatus();
-            showToastNotification("Disconnected",
-                    "Connection to server has been lost",
-                    JOptionPane.WARNING_MESSAGE);
+            if (connectionManager.isAutoConnectEnabled()) {
+                showToastNotification("Disconnected",
+                        "Connection to server has been lost. Attempting to reconnect automatically...",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                showToastNotification("Disconnected",
+                        "Connection to server has been lost. Click 'Force Connect' to reconnect.",
+                        JOptionPane.WARNING_MESSAGE);
+            }
         });
     }
 
@@ -930,7 +1024,7 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
             statusIconLabel.setIcon(connectingIcon);
             connectButton.setEnabled(false);
 
-            // Disable all action buttons while reconnecting
+            // Disable all operation buttons
             searchButton.setEnabled(false);
             addButton.setEnabled(false);
             removeButton.setEnabled(false);
@@ -938,22 +1032,30 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
             addMeaningButton.setEnabled(false);
             updateMeaningButton.setEnabled(false);
 
-            showToastNotification("Reconnecting",
-                    "Attempting to reconnect to server...",
-                    JOptionPane.WARNING_MESSAGE);
+            // We'll show a toast only when reconnection starts, not for each attempt
+            showToastNotification("Reconnecting", "Attempting to reconnect to server...", JOptionPane.WARNING_MESSAGE);
         });
     }
 
     @Override
     public void onReconnectFailed() {
         SwingUtilities.invokeLater(() -> {
-            statusLabel.setText("Reconnection failed");
+            // Update the status to show we're still trying if auto-connect is on
+            if (connectionManager.isAutoConnectEnabled()) {
+                statusLabel.setText("Reconnection failed (retrying...)");
+            } else {
+                statusLabel.setText("Reconnection failed");
+            }
             statusLabel.setForeground(Color.RED);
-            statusIconLabel.setIcon(disconnectedIcon);
-            connectButton.setEnabled(true);
-            connectButton.setText("Connect");
 
-            // Disable all action buttons when reconnection failed
+            // Make connect button available if auto-connect is disabled
+            if (!connectionManager.isAutoConnectEnabled()) {
+                statusIconLabel.setIcon(disconnectedIcon);
+                connectButton.setEnabled(true);
+                connectButton.setText("Force Connect");
+            }
+
+            // Keep all operation buttons disabled
             searchButton.setEnabled(false);
             addButton.setEnabled(false);
             removeButton.setEnabled(false);
@@ -961,9 +1063,16 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
             addMeaningButton.setEnabled(false);
             updateMeaningButton.setEnabled(false);
 
-            showToastNotification("Connection Failed",
-                    "Failed to connect to server: " + serverAddress + ":" + serverPort,
-                    JOptionPane.ERROR_MESSAGE);
+            // Show a toast notification but not too frequently
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastConnectionToastTime > Constants.TOAST_COOLDOWN_MS) {
+                lastConnectionToastTime = currentTime;
+                if (connectionManager.isAutoConnectEnabled()) {
+                    showToastNotification("Still Trying", "Reconnection failed. Will continue retrying...", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    showToastNotification("Connection Failed", "Cannot connect to server. Click 'Force Connect' to try again.", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
     }
 }

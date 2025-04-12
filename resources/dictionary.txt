@@ -20,9 +20,16 @@ distributed
     Spread out or scattered over an area
     Divided among a number of recipients
 
+edfg
+    v
+
 java
     A high-level, class-based, object-oriented programming language
     An island of Indonesia
+
+kamal20
+    awesome man
+    cool man
 
 network
     An arrangement of intersecting horizontal and vertical lines

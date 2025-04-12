@@ -6,13 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.net.ConnectException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import protocol.Request;
 import protocol.Response;
@@ -20,7 +14,7 @@ import util.Constants;
 import util.Logger;
 
 /**
- * Manages the connection to the dictionary server with improved reliability.
+ * Manages the connection to the dictionary server.
  */
 public class ConnectionManager {
     private final String serverAddress;
@@ -28,13 +22,14 @@ public class ConnectionManager {
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private final AtomicBoolean connected = new AtomicBoolean(false);
-    private ConnectionListener listener;
-    private ScheduledExecutorService heartbeatExecutor;
 
-    // Added for thread safety
-    private final Lock connectionLock = new ReentrantLock();
-    private final AtomicBoolean isReconnecting = new AtomicBoolean(false);
+    private final AtomicBoolean connected = new AtomicBoolean(false);
+    private final AtomicBoolean autoConnect = new AtomicBoolean(true);
+    private final AtomicBoolean reconnecting = new AtomicBoolean(false);
+
+    private ConnectionListener listener;
+    private Thread heartbeatThread;
+    private Thread reconnectThread;
 
     /**
      * Creates a new ConnectionManager with the specified server address and port.
@@ -45,27 +40,13 @@ public class ConnectionManager {
     public ConnectionManager(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
-        this.heartbeatExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
-            Thread t = new Thread(r, "Heartbeat-Thread");
-            t.setDaemon(true);
-            return t;
-        });
     }
 
-    /**
-     * Gets the server address.
-     *
-     * @return the server address
-     */
+
     public String getServerAddress() {
         return serverAddress;
     }
 
-    /**
-     * Gets the server port.
-     *
-     * @return the server port
-     */
     public int getServerPort() {
         return serverPort;
     }
@@ -80,133 +61,195 @@ public class ConnectionManager {
     }
 
     /**
+     * Sets the auto-connect flag.
+     *
+     * @param enable true to enable auto-connect, false to disable
+     */
+    public void setAutoConnect(boolean enable) {
+        autoConnect.set(enable);
+
+        // If we're enabling auto-connect and we're currently disconnected, attempt to connect
+        if (enable && !connected.get() && !reconnecting.get()) {
+            startReconnectThread();
+        }
+    }
+
+    /**
+     * Gets the current auto-connect status.
+     *
+     * @return true if auto-connect is enabled, false otherwise
+     */
+    public boolean isAutoConnectEnabled() {
+        return autoConnect.get();
+    }
+
+    /**
      * Connects to the server.
      *
      * @return true if connected successfully, false otherwise
      */
     public boolean connect() {
-        connectionLock.lock();
+        if (connected.get()) {
+            return true;
+        }
+
+        Logger.info("Connecting to server: " + serverAddress + ":" + serverPort);
+
         try {
-            if (connected.get()) {
-                return true;
+            socket = new Socket(serverAddress, serverPort);
+            socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
+
+            // Important: Create output stream first, then input stream
+            out = new ObjectOutputStream(socket.getOutputStream());
+            out.flush(); // Flush header information
+
+            in = new ObjectInputStream(socket.getInputStream());
+
+            connected.set(true);
+
+            if (listener != null) {
+                listener.onConnected();
             }
 
-            Logger.info("Connecting to server: " + serverAddress + ":" + serverPort);
+            // Start heartbeat thread
+            startHeartbeatThread();
 
-            try {
-                socket = new Socket(serverAddress, serverPort);
-                socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
-
-                // Important: Create output stream first, then input stream
-                out = new ObjectOutputStream(socket.getOutputStream());
-                out.flush(); // Flush header information
-
-                in = new ObjectInputStream(socket.getInputStream());
-
-                connected.set(true);
-
-                if (listener != null) {
-                    listener.onConnected();
-                }
-
-                Logger.info("Connected to server: " + serverAddress + ":" + serverPort);
-
-                // Start heartbeat to detect server disconnection
-                startHeartbeat();
-
-                return true;
-            } catch (ConnectException e) {
-                Logger.error("Connection refused: " + e.getMessage());
-                disconnect();
-                if (listener != null) {
-                    listener.onReconnectFailed();
-                }
-                return false;
-            } catch (IOException e) {
-                Logger.error("Failed to connect to server: " + e.getMessage());
-                disconnect();
-                if (listener != null) {
-                    listener.onReconnectFailed();
-                }
-                return false;
-            }
-        } finally {
-            connectionLock.unlock();
+            Logger.info("Connected to server: " + serverAddress + ":" + serverPort);
+            return true;
+        } catch (IOException e) {
+            Logger.error("Failed to connect to server: " + e.getMessage());
+            cleanupConnection();
+            return false;
         }
     }
 
     /**
-     * Starts the heartbeat mechanism to detect server disconnections.
+     * Starts a thread to send periodic heartbeats to the server.
      */
-    private void startHeartbeat() {
-        if (heartbeatExecutor.isShutdown()) {
-            heartbeatExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
-                Thread t = new Thread(r, "Heartbeat-Thread");
-                t.setDaemon(true);
-                return t;
-            });
+    private void startHeartbeatThread() {
+        // Stop any existing heartbeat thread
+        if (heartbeatThread != null && heartbeatThread.isAlive()) {
+            heartbeatThread.interrupt();
         }
 
-        heartbeatExecutor.scheduleAtFixedRate(() -> {
-            if (connected.get()) {
-                try {
-                    // First check basic socket state
-                    if (socket == null || socket.isClosed() || !socket.isConnected() ||
-                            socket.isInputShutdown() || socket.isOutputShutdown()) {
-                        Logger.debug("Socket state check failed in heartbeat");
-                        notifyDisconnection();
-                        return;
-                    }
-
-                    // Then perform an actual protocol request to verify the server is responding
-                    // Just do a simple search for a unlikely word - lightweight but protocol-compliant
-                    Request pingRequest = new Request(Request.OperationType.SEARCH, "_heartbeat_");
-                    Response response = sendHeartbeatRequest(pingRequest);
-
-                    if (response == null) {
-                        Logger.debug("Heartbeat request failed - server not responding");
-                        notifyDisconnection();
-                    }
-                } catch (Exception e) {
-                    Logger.debug("Heartbeat detected disconnection: " + e.getMessage());
-                    notifyDisconnection();
-                }
-            }
-        }, 10, 10, TimeUnit.SECONDS); // Less frequent to reduce load
-    }
-
-    /**
-     * Sends a heartbeat request to check if server is alive.
-     * This is separate from regular sendRequest to avoid recursion and notification issues.
-     */
-    private Response sendHeartbeatRequest(Request request) {
-        connectionLock.lock();
-        try {
-            if (!connected.get() || socket == null || out == null || in == null) {
-                return null;
-            }
-
+        heartbeatThread = new Thread(() -> {
             try {
-                socket.setSoTimeout(2000); // Short timeout for heartbeat
-                out.writeObject(request);
-                out.flush();
-                out.reset();
+                while (connected.get() && !Thread.currentThread().isInterrupted()) {
+                    try {
+                        Thread.sleep(10000); // Send heartbeat every 10 seconds
 
-                Object obj = in.readObject();
-                socket.setSoTimeout(Constants.CONNECTION_TIMEOUT); // Reset timeout
+                        if (!connected.get()) {
+                            break;
+                        }
 
-                if (obj instanceof Response) {
-                    return (Response) obj;
-                } else {
-                    return null;
+                        // Check if socket is still valid
+                        if (socket == null || socket.isClosed()) {
+                            notifyDisconnection();
+                            break;
+                        }
+
+                        // Send heartbeat request
+                        Request pingRequest = new Request(Request.OperationType.HEARTBEAT, "_heartbeat_");
+
+                        synchronized (this) {
+                            if (out != null) {
+                                try {
+                                    socket.setSoTimeout(2000); // Short timeout for heartbeat
+                                    out.writeObject(pingRequest);
+                                    out.flush();
+                                    out.reset();
+
+                                    // Read response (we don't care about the result, just that it worked)
+                                    in.readObject();
+
+                                    // Reset timeout
+                                    socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
+                                } catch (Exception e) {
+                                    Logger.debug("Heartbeat failed: " + e.getMessage());
+                                    notifyDisconnection();
+                                    break;
+                                }
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    } catch (Exception e) {
+                        Logger.debug("Error in heartbeat thread: " + e.getMessage());
+                        notifyDisconnection();
+                        break;
+                    }
                 }
             } catch (Exception e) {
-                Logger.debug("Heartbeat request exception: " + e.getMessage());
-                return null;
+                Logger.error("Heartbeat thread error: " + e.getMessage());
             }
-        } finally {
-            connectionLock.unlock();
+            Logger.debug("Heartbeat thread exiting");
+        });
+
+        heartbeatThread.setDaemon(true);
+        heartbeatThread.setName("Heartbeat-Thread");
+        heartbeatThread.start();
+    }
+
+    /**
+     * Starts a thread to attempt reconnection.
+     */
+    private void startReconnectThread() {
+        if (reconnecting.get()) {
+            return; // Already reconnecting
         }
+
+        reconnecting.set(true);
+
+        // Stop any existing reconnect thread
+        if (reconnectThread != null && reconnectThread.isAlive()) {
+            reconnectThread.interrupt();
+        }
+
+        reconnectThread = new Thread(() -> {
+            try {
+                int attemptCount = 0;
+
+                if (listener != null) {
+                    listener.onReconnecting();
+                }
+
+                while (autoConnect.get() && !connected.get() && !Thread.currentThread().isInterrupted()) {
+                    attemptCount++;
+                    Logger.info("Reconnect attempt " + attemptCount);
+
+                    if (connect()) {
+                        Logger.info("Reconnection successful");
+                        break;
+                    }
+
+                    // Notify after every few attempts
+                    if (attemptCount % 3 == 0 && listener != null) {
+                        listener.onReconnectFailed();
+                    }
+
+                    // Wait before next attempt with increasing delay
+                    int delay = Math.min(3000 * Math.min(attemptCount, 10), 30000);
+
+                    try {
+                        Thread.sleep(delay);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+
+                if (!connected.get() && listener != null) {
+                    listener.onReconnectFailed();
+                }
+            } finally {
+                reconnecting.set(false);
+            }
+        });
+
+        reconnectThread.setDaemon(true);
+        reconnectThread.setName("Reconnect-Thread");
+        reconnectThread.start();
     }
 
     /**
@@ -214,65 +257,78 @@ public class ConnectionManager {
      */
     private void notifyDisconnection() {
         if (connected.compareAndSet(true, false)) {
-            disconnect();
+            cleanupConnection();
 
             if (listener != null) {
                 listener.onDisconnected();
             }
+
+            // Try to reconnect if auto-connect is enabled
+            if (autoConnect.get() && !reconnecting.get()) {
+                startReconnectThread();
+            }
+        }
+    }
+
+    /**
+     * Cleans up connection resources.
+     */
+    private synchronized void cleanupConnection() {
+        try {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    // Ignore errors during close
+                }
+                in = null;
+            }
+
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    // Ignore errors during close
+                }
+                out = null;
+            }
+
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    // Ignore errors during close
+                }
+                socket = null;
+            }
+        } catch (Exception e) {
+            Logger.debug("Error during connection cleanup: " + e.getMessage());
         }
     }
 
     /**
      * Disconnects from the server.
      */
-    public void disconnect() {
-        connectionLock.lock();
-        try {
-            if (!connected.get() && socket == null) {
-                return;
-            }
+    public synchronized void disconnect() {
+        boolean wasConnected = connected.getAndSet(false);
 
-            Logger.info("Disconnecting from server");
-
-            try {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        Logger.debug("Error closing input stream: " + e.getMessage());
-                    }
-                    in = null;
-                }
-
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        Logger.debug("Error closing output stream: " + e.getMessage());
-                    }
-                    out = null;
-                }
-
-                if (socket != null) {
-                    try {
-                        socket.close();
-                    } catch (IOException e) {
-                        Logger.debug("Error closing socket: " + e.getMessage());
-                    }
-                    socket = null;
-                }
-            } finally {
-                connected.set(false);
-
-                if (listener != null) {
-                    listener.onDisconnected();
-                }
-
-                Logger.info("Disconnected from server");
-            }
-        } finally {
-            connectionLock.unlock();
+        // Stop heartbeat thread
+        if (heartbeatThread != null) {
+            heartbeatThread.interrupt();
         }
+
+        // Stop reconnect thread
+        if (reconnectThread != null) {
+            reconnectThread.interrupt();
+        }
+
+        cleanupConnection();
+
+        if (wasConnected && listener != null) {
+            listener.onDisconnected();
+        }
+
+        Logger.info("Disconnected from server");
     }
 
     /**
@@ -281,109 +337,37 @@ public class ConnectionManager {
      * @param request the request to send
      * @return the server's response, or null if there was an error
      */
-    public Response sendRequest(Request request) {
+    public synchronized Response sendRequest(Request request) {
         if (!connected.get()) {
-            if (!reconnect()) {
-                return null;
-            }
-        }
-
-        connectionLock.lock();
-        try {
-            if (!connected.get()) {
-                return null;
-            }
-
-            try {
-                // Log request (for debugging)
-                Logger.debug("Sending request: " + request.toString());
-
-                socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
-                out.writeObject(request);
-                out.flush();
-                out.reset(); // Important: Reset object cache to avoid stale data
-
-                Object obj = in.readObject();
-                if (obj instanceof Response response) {
-                    // Log response (for debugging)
-                    Logger.debug("Received response: " + response.toString());
-                    return response;
-                } else {
-                    Logger.error("Received invalid response type: " +
-                            (obj != null ? obj.getClass().getName() : "null"));
-                    return null;
-                }
-            } catch (SocketException | SocketTimeoutException e) {
-                Logger.error("Socket error during request: " + e.getMessage());
-                notifyDisconnection();
-                return null;
-            } catch (IOException | ClassNotFoundException e) {
-                Logger.error("Error sending request: " + e.getMessage());
-                notifyDisconnection();
-                return null;
-            }
-        } finally {
-            connectionLock.unlock();
-        }
-    }
-
-    /**
-     * Attempts to reconnect to the server with improved retry logic.
-     *
-     * @return true if reconnected successfully, false otherwise
-     */
-    private boolean reconnect() {
-        // Avoid multiple threads trying to reconnect simultaneously
-        if (!isReconnecting.compareAndSet(false, true)) {
-            return false;
+            return null;
         }
 
         try {
-            if (listener != null) {
-                listener.onReconnecting();
+            Logger.debug("Sending request: " + request);
+
+            out.writeObject(request);
+            out.flush();
+            out.reset(); // Reset object cache
+
+            Object obj = in.readObject();
+            if (obj instanceof Response) {
+                Logger.debug("Received response: " + obj);
+                return (Response) obj;
+            } else {
+                Logger.error("Received invalid response type");
+                return null;
             }
-
-            Logger.info("Attempting to reconnect to server");
-
-            // Clean up any existing connection resources
-            disconnect();
-
-            for (int attempt = 1; attempt <= Constants.MAX_RECONNECT_ATTEMPTS; attempt++) {
-                Logger.info("Reconnect attempt " + attempt + " of " + Constants.MAX_RECONNECT_ATTEMPTS);
-
-                if (connect()) {
-                    Logger.info("Reconnection successful");
-                    return true;
-                }
-
-                // If this is not the last attempt, wait before retrying
-                if (attempt < Constants.MAX_RECONNECT_ATTEMPTS) {
-                    try {
-                        Thread.sleep(Constants.RECONNECT_DELAY);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        return false;
-                    }
-                }
-            }
-
-            Logger.error("Failed to reconnect after " + Constants.MAX_RECONNECT_ATTEMPTS + " attempts");
-
-            if (listener != null) {
-                listener.onReconnectFailed();
-            }
-
-            return false;
-        } finally {
-            isReconnecting.set(false);
+        } catch (SocketException | SocketTimeoutException e) {
+            Logger.error("Socket error during request: " + e.getMessage());
+            notifyDisconnection();
+            return null;
+        } catch (IOException | ClassNotFoundException e) {
+            Logger.error("Error sending request: " + e.getMessage());
+            notifyDisconnection();
+            return null;
         }
     }
 
-    /**
-     * Checks if the connection is established.
-     *
-     * @return true if connected, false otherwise
-     */
     public boolean isConnected() {
         return connected.get();
     }
@@ -393,37 +377,13 @@ public class ConnectionManager {
      */
     public void shutdown() {
         disconnect();
-
-        if (heartbeatExecutor != null) {
-            heartbeatExecutor.shutdownNow();
-            heartbeatExecutor = null;
-        }
-
         Logger.info("Connection manager shut down");
     }
 
-    /**
-     * Interface for connection status listeners.
-     */
     public interface ConnectionListener {
-        /**
-         * Called when a connection is established.
-         */
         void onConnected();
-
-        /**
-         * Called when the connection is lost.
-         */
         void onDisconnected();
-
-        /**
-         * Called when attempting to reconnect.
-         */
         void onReconnecting();
-
-        /**
-         * Called when reconnection fails.
-         */
         void onReconnectFailed();
     }
 }

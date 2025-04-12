@@ -12,7 +12,7 @@ import util.Constants;
 import util.Logger;
 
 /**
- * Multi-threaded dictionary server that handles client connections.
+ * Multithreaded dictionary server that handles client connections.
  */
 public class DictionaryServer {
     private final int port;
@@ -85,18 +85,27 @@ public class DictionaryServer {
 
         Logger.info("Stopping dictionary server...");
 
-        // Close all active client handlers first
+        Logger.info("Closing " + activeHandlers.size() + " active client connections");
         for (ClientHandler handler : activeHandlers) {
             handler.close();
         }
         activeHandlers.clear();
 
+        // Add a small delay to allow connections to terminate gracefully
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
         // Shutdown thread pool
+        Logger.info("Shutting down thread pool");
         threadPool.shutdown();
 
         // Close server socket
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
+                Logger.info("Closing server socket");
                 serverSocket.close();
             }
         } catch (IOException e) {

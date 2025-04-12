@@ -18,7 +18,7 @@ public class Constants {
     public static final int CONNECTION_TIMEOUT = 5000; // milliseconds
     public static final int MAX_RECONNECT_ATTEMPTS = 5;
     public static final int RECONNECT_DELAY = 2000; // milliseconds
-
+    public  static final int TOAST_COOLDOWN_MS = 5000; //milliseconds
     // Dictionary file format
     public static final String WORD_DELIMITER = "\\|";  // Pipe character in regex
     public static final String WORD_SEPARATOR = "|";    // Pipe character

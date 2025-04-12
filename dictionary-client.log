@@ -1,0 +1,1076 @@
+[2025-04-12 22:40:22] INFO: Dictionary client started
+[2025-04-12 22:40:22] INFO: Server address: localhost
+[2025-04-12 22:40:22] INFO: Server port: 1234
+[2025-04-12 22:55:01] INFO: Connecting to server: localhost:1234
+[2025-04-12 22:55:01] INFO: Connected to server: localhost:1234
+[2025-04-12 22:55:45] INFO: Disconnecting from server
+[2025-04-12 22:55:45] INFO: Disconnected from server
+[2025-04-12 22:57:17] INFO: Connecting to server: localhost:1234
+[2025-04-12 22:57:17] INFO: Connected to server: localhost:1234
+[2025-04-12 22:57:20] INFO: Disconnecting from server
+[2025-04-12 22:57:20] INFO: Disconnected from server
+[2025-04-12 22:57:23] INFO: Connecting to server: localhost:1234
+[2025-04-12 22:57:23] INFO: Connected to server: localhost:1234
+[2025-04-12 22:57:57] INFO: Disconnecting from server
+[2025-04-12 22:57:57] INFO: Disconnected from server
+[2025-04-12 22:58:05] INFO: Connecting to server: localhost:1234
+[2025-04-12 22:58:05] ERROR: Connection refused: Connection refused
+[2025-04-12 22:59:40] INFO: Connection manager shut down
+[2025-04-13 00:21:38] INFO: Dictionary client started
+[2025-04-13 00:21:38] INFO: Server address: localhost
+[2025-04-13 00:21:38] INFO: Server port: 1234
+[2025-04-13 00:21:53] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:21:53] INFO: Connected to server: localhost:1234
+[2025-04-13 00:21:56] INFO: Disconnecting from server
+[2025-04-13 00:21:56] INFO: Disconnected from server
+[2025-04-13 00:21:58] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:21:58] INFO: Connected to server: localhost:1234
+[2025-04-13 00:25:33] INFO: Disconnecting from server
+[2025-04-13 00:25:33] INFO: Disconnected from server
+[2025-04-13 00:27:51] INFO: Connection manager shut down
+[2025-04-13 00:27:53] INFO: Dictionary client started
+[2025-04-13 00:27:53] INFO: Server address: localhost
+[2025-04-13 00:27:53] INFO: Server port: 1234
+[2025-04-13 00:28:09] INFO: Attempting to reconnect to server
+[2025-04-13 00:28:09] INFO: Reconnect attempt 1 of 5
+[2025-04-13 00:28:09] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:28:09] INFO: Connected to server: localhost:1234
+[2025-04-13 00:28:09] INFO: Reconnection successful
+[2025-04-13 00:28:49] INFO: Disconnecting from server
+[2025-04-13 00:28:49] INFO: Disconnected from server
+[2025-04-13 00:28:55] INFO: Connection manager shut down
+[2025-04-13 00:29:00] INFO: Dictionary client started
+[2025-04-13 00:29:00] INFO: Server address: localhost
+[2025-04-13 00:29:00] INFO: Server port: 1234
+[2025-04-13 00:29:02] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:29:02] ERROR: Connection refused: Connection refused
+[2025-04-13 00:29:09] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:29:09] INFO: Connected to server: localhost:1234
+[2025-04-13 00:29:11] INFO: Disconnecting from server
+[2025-04-13 00:29:11] INFO: Disconnected from server
+[2025-04-13 00:29:12] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:29:12] INFO: Connected to server: localhost:1234
+[2025-04-13 00:29:52] INFO: Disconnecting from server
+[2025-04-13 00:29:52] INFO: Disconnected from server
+[2025-04-13 00:29:52] INFO: Connection manager shut down
+[2025-04-13 00:38:48] INFO: Dictionary client started
+[2025-04-13 00:38:48] INFO: Server address: localhost
+[2025-04-13 00:38:48] INFO: Server port: 1234
+[2025-04-13 00:38:55] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:38:55] INFO: Connected to server: localhost:1234
+[2025-04-13 00:40:45] INFO: Disconnecting from server
+[2025-04-13 00:40:45] INFO: Disconnected from server
+[2025-04-13 00:40:55] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:40:55] INFO: Connected to server: localhost:1234
+[2025-04-13 00:41:41] INFO: Disconnecting from server
+[2025-04-13 00:41:41] INFO: Disconnected from server
+[2025-04-13 00:41:42] INFO: Connection manager shut down
+[2025-04-13 00:41:51] INFO: Dictionary client started
+[2025-04-13 00:41:51] INFO: Server address: localhost
+[2025-04-13 00:41:51] INFO: Server port: 1234
+[2025-04-13 00:42:06] INFO: Attempting to reconnect to server
+[2025-04-13 00:42:06] INFO: Reconnect attempt 1 of 5
+[2025-04-13 00:42:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:42:06] INFO: Connected to server: localhost:1234
+[2025-04-13 00:42:06] INFO: Reconnection successful
+[2025-04-13 00:50:22] INFO: Disconnecting from server
+[2025-04-13 00:50:22] INFO: Disconnected from server
+[2025-04-13 00:50:22] INFO: Connection manager shut down
+[2025-04-13 00:50:25] INFO: Dictionary client started
+[2025-04-13 00:50:25] INFO: Server address: localhost
+[2025-04-13 00:50:25] INFO: Server port: 1234
+[2025-04-13 00:50:29] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:50:29] INFO: Connected to server: localhost:1234
+[2025-04-13 00:53:09] INFO: Disconnecting from server
+[2025-04-13 00:53:09] INFO: Disconnected from server
+[2025-04-13 00:53:09] INFO: Connection manager shut down
+[2025-04-13 00:53:12] INFO: Dictionary client started
+[2025-04-13 00:53:12] INFO: Server address: localhost
+[2025-04-13 00:53:12] INFO: Server port: 1234
+[2025-04-13 00:53:13] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:53:13] INFO: Connected to server: localhost:1234
+[2025-04-13 00:54:19] INFO: Disconnecting from server
+[2025-04-13 00:54:19] INFO: Disconnected from server
+[2025-04-13 00:54:19] INFO: Connection manager shut down
+[2025-04-13 00:54:22] INFO: Dictionary client started
+[2025-04-13 00:54:22] INFO: Server address: localhost
+[2025-04-13 00:54:22] INFO: Server port: 1234
+[2025-04-13 00:54:24] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:54:24] INFO: Connected to server: localhost:1234
+[2025-04-13 00:54:58] INFO: Disconnecting from server
+[2025-04-13 00:54:58] INFO: Disconnected from server
+[2025-04-13 00:54:58] INFO: Connection manager shut down
+[2025-04-13 00:55:01] INFO: Dictionary client started
+[2025-04-13 00:55:01] INFO: Server address: localhost
+[2025-04-13 00:55:01] INFO: Server port: 1234
+[2025-04-13 00:55:03] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:55:03] INFO: Connected to server: localhost:1234
+[2025-04-13 00:56:22] INFO: Disconnecting from server
+[2025-04-13 00:56:22] INFO: Disconnected from server
+[2025-04-13 00:56:22] INFO: Connection manager shut down
+[2025-04-13 00:56:25] INFO: Dictionary client started
+[2025-04-13 00:56:25] INFO: Server address: localhost
+[2025-04-13 00:56:25] INFO: Server port: 1234
+[2025-04-13 00:56:28] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:56:28] INFO: Connected to server: localhost:1234
+[2025-04-13 00:58:29] INFO: Disconnecting from server
+[2025-04-13 00:58:29] INFO: Disconnected from server
+[2025-04-13 00:58:29] INFO: Connection manager shut down
+[2025-04-13 00:58:32] INFO: Dictionary client started
+[2025-04-13 00:58:32] INFO: Server address: localhost
+[2025-04-13 00:58:32] INFO: Server port: 1234
+[2025-04-13 00:58:33] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:58:33] INFO: Connected to server: localhost:1234
+[2025-04-13 00:58:51] INFO: Disconnecting from server
+[2025-04-13 00:58:51] INFO: Disconnected from server
+[2025-04-13 00:58:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:58:52] INFO: Connected to server: localhost:1234
+[2025-04-13 00:58:58] INFO: Disconnecting from server
+[2025-04-13 00:58:58] INFO: Disconnected from server
+[2025-04-13 00:59:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 00:59:01] INFO: Connected to server: localhost:1234
+[2025-04-13 00:59:05] INFO: Disconnecting from server
+[2025-04-13 00:59:05] INFO: Disconnected from server
+[2025-04-13 01:00:23] INFO: Connection manager shut down
+[2025-04-13 01:00:26] INFO: Dictionary client started
+[2025-04-13 01:00:26] INFO: Server address: localhost
+[2025-04-13 01:00:26] INFO: Server port: 1234
+[2025-04-13 01:00:29] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:00:29] INFO: Connected to server: localhost:1234
+[2025-04-13 01:00:39] INFO: Disconnecting from server
+[2025-04-13 01:00:39] INFO: Disconnected from server
+[2025-04-13 01:00:43] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:00:43] ERROR: Connection refused: Connection refused
+[2025-04-13 01:00:48] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:00:48] INFO: Connected to server: localhost:1234
+[2025-04-13 01:00:56] ERROR: Socket error during request: Broken pipe
+[2025-04-13 01:00:56] INFO: Disconnecting from server
+[2025-04-13 01:00:56] INFO: Disconnected from server
+[2025-04-13 01:01:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:01:06] ERROR: Connection refused: Connection refused
+[2025-04-13 01:01:10] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:01:10] INFO: Connected to server: localhost:1234
+[2025-04-13 01:01:58] INFO: Disconnecting from server
+[2025-04-13 01:01:58] INFO: Disconnected from server
+[2025-04-13 01:02:22] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:02:22] INFO: Connected to server: localhost:1234
+[2025-04-13 01:08:30] INFO: Disconnecting from server
+[2025-04-13 01:08:30] INFO: Disconnected from server
+[2025-04-13 01:08:32] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:08:32] INFO: Connected to server: localhost:1234
+[2025-04-13 01:12:42] INFO: Disconnecting from server
+[2025-04-13 01:12:42] INFO: Disconnected from server
+[2025-04-13 01:12:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:12:52] INFO: Connected to server: localhost:1234
+[2025-04-13 01:12:58] INFO: Disconnecting from server
+[2025-04-13 01:12:58] INFO: Disconnected from server
+[2025-04-13 01:15:38] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:15:38] INFO: Connected to server: localhost:1234
+[2025-04-13 01:15:50] INFO: Disconnecting from server
+[2025-04-13 01:15:50] INFO: Disconnected from server
+[2025-04-13 01:22:41] INFO: Connection manager shut down
+[2025-04-13 01:22:44] INFO: Dictionary client started
+[2025-04-13 01:22:44] INFO: Server address: localhost
+[2025-04-13 01:22:44] INFO: Server port: 1234
+[2025-04-13 01:22:48] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:22:48] INFO: Connected to server: localhost:1234
+[2025-04-13 01:23:08] INFO: Disconnecting from server
+[2025-04-13 01:23:08] INFO: Disconnected from server
+[2025-04-13 01:23:10] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:23:10] ERROR: Connection refused: Connection refused
+[2025-04-13 01:23:14] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:23:14] INFO: Connected to server: localhost:1234
+[2025-04-13 01:23:16] ERROR: Socket error during request: Broken pipe
+[2025-04-13 01:23:16] INFO: Disconnecting from server
+[2025-04-13 01:23:16] INFO: Disconnected from server
+[2025-04-13 01:23:44] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:23:44] INFO: Connected to server: localhost:1234
+[2025-04-13 01:23:48] INFO: Disconnecting from server
+[2025-04-13 01:23:48] INFO: Disconnected from server
+[2025-04-13 01:23:54] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:23:54] INFO: Connected to server: localhost:1234
+[2025-04-13 01:23:58] INFO: Disconnecting from server
+[2025-04-13 01:23:58] INFO: Disconnected from server
+[2025-04-13 01:24:07] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:24:07] INFO: Connected to server: localhost:1234
+[2025-04-13 01:24:57] INFO: Disconnecting from server
+[2025-04-13 01:24:57] INFO: Disconnected from server
+[2025-04-13 01:26:09] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:26:09] INFO: Connected to server: localhost:1234
+[2025-04-13 01:26:10] INFO: Disconnecting from server
+[2025-04-13 01:26:10] INFO: Disconnected from server
+[2025-04-13 01:26:11] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:26:11] INFO: Connected to server: localhost:1234
+[2025-04-13 01:26:12] INFO: Disconnecting from server
+[2025-04-13 01:26:12] INFO: Disconnected from server
+[2025-04-13 01:27:23] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:27:23] INFO: Connected to server: localhost:1234
+[2025-04-13 01:38:14] INFO: Disconnecting from server
+[2025-04-13 01:38:14] INFO: Disconnected from server
+[2025-04-13 01:38:14] INFO: Connection manager shut down
+[2025-04-13 01:38:17] INFO: Dictionary client started
+[2025-04-13 01:38:17] INFO: Server address: localhost
+[2025-04-13 01:38:17] INFO: Server port: 1234
+[2025-04-13 01:38:20] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:38:20] INFO: Connected to server: localhost:1234
+[2025-04-13 01:41:56] INFO: Disconnecting from server
+[2025-04-13 01:41:56] INFO: Disconnected from server
+[2025-04-13 01:41:56] INFO: Connection manager shut down
+[2025-04-13 01:41:59] INFO: Dictionary client started
+[2025-04-13 01:41:59] INFO: Server address: localhost
+[2025-04-13 01:41:59] INFO: Server port: 1234
+[2025-04-13 01:42:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:42:01] INFO: Connected to server: localhost:1234
+[2025-04-13 01:43:19] INFO: Disconnecting from server
+[2025-04-13 01:43:19] INFO: Disconnected from server
+[2025-04-13 01:43:19] INFO: Connection manager shut down
+[2025-04-13 01:43:22] INFO: Dictionary client started
+[2025-04-13 01:43:22] INFO: Server address: localhost
+[2025-04-13 01:43:22] INFO: Server port: 1234
+[2025-04-13 01:43:28] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:43:28] INFO: Connected to server: localhost:1234
+[2025-04-13 01:44:35] INFO: Disconnecting from server
+[2025-04-13 01:44:35] INFO: Disconnected from server
+[2025-04-13 01:44:37] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:44:37] INFO: Connected to server: localhost:1234
+[2025-04-13 01:45:29] INFO: Disconnecting from server
+[2025-04-13 01:45:29] INFO: Disconnected from server
+[2025-04-13 01:47:35] INFO: Connection manager shut down
+[2025-04-13 01:47:37] INFO: Dictionary client started
+[2025-04-13 01:47:37] INFO: Server address: localhost
+[2025-04-13 01:47:37] INFO: Server port: 1234
+[2025-04-13 01:47:44] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:47:44] INFO: Connected to server: localhost:1234
+[2025-04-13 01:48:38] INFO: Disconnecting from server
+[2025-04-13 01:48:38] INFO: Disconnected from server
+[2025-04-13 01:48:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 01:48:41] INFO: Connected to server: localhost:1234
+[2025-04-13 02:10:34] INFO: Disconnecting from server
+[2025-04-13 02:10:34] INFO: Disconnected from server
+[2025-04-13 02:10:42] INFO: Connection manager shut down
+[2025-04-13 02:10:44] INFO: Dictionary client started
+[2025-04-13 02:10:44] INFO: Server address: localhost
+[2025-04-13 02:10:44] INFO: Server port: 1234
+[2025-04-13 02:11:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:11:06] INFO: Connected to server: localhost:1234
+[2025-04-13 02:11:26] INFO: Disconnecting from server
+[2025-04-13 02:11:27] INFO: Disconnected from server
+[2025-04-13 02:11:27] INFO: Attempting to reconnect to server
+[2025-04-13 02:11:27] INFO: Reconnect attempt 1 of 5
+[2025-04-13 02:11:27] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:11:27] ERROR: Connection refused: Connection refused
+[2025-04-13 02:11:29] INFO: Reconnect attempt 2 of 5
+[2025-04-13 02:11:29] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:11:29] ERROR: Connection refused: Connection refused
+[2025-04-13 02:11:31] INFO: Reconnect attempt 3 of 5
+[2025-04-13 02:11:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:11:31] ERROR: Connection refused: Connection refused
+[2025-04-13 02:11:33] INFO: Reconnect attempt 4 of 5
+[2025-04-13 02:11:33] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:11:33] ERROR: Connection refused: Connection refused
+[2025-04-13 02:11:35] INFO: Reconnect attempt 5 of 5
+[2025-04-13 02:11:35] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:11:35] ERROR: Connection refused: Connection refused
+[2025-04-13 02:11:35] ERROR: Failed to reconnect after 5 attempts
+[2025-04-13 02:11:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:11:47] ERROR: Connection refused: Connection refused
+[2025-04-13 02:11:58] INFO: Attempting to reconnect to server
+[2025-04-13 02:11:58] INFO: Reconnect attempt 1 of 5
+[2025-04-13 02:11:58] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:11:58] ERROR: Connection refused: Connection refused
+[2025-04-13 02:12:00] INFO: Reconnect attempt 2 of 5
+[2025-04-13 02:12:00] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:12:00] ERROR: Connection refused: Connection refused
+[2025-04-13 02:12:02] INFO: Reconnect attempt 3 of 5
+[2025-04-13 02:12:02] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:12:02] ERROR: Connection refused: Connection refused
+[2025-04-13 02:12:04] INFO: Reconnect attempt 4 of 5
+[2025-04-13 02:12:04] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:12:04] ERROR: Connection refused: Connection refused
+[2025-04-13 02:12:06] INFO: Reconnect attempt 5 of 5
+[2025-04-13 02:12:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:12:06] INFO: Connected to server: localhost:1234
+[2025-04-13 02:12:06] INFO: Reconnection successful
+[2025-04-13 02:12:13] INFO: Disconnecting from server
+[2025-04-13 02:12:13] INFO: Disconnected from server
+[2025-04-13 02:13:33] INFO: Attempting to reconnect to server
+[2025-04-13 02:13:33] INFO: Reconnect attempt 1 of 5
+[2025-04-13 02:13:33] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:13:33] ERROR: Connection refused: Connection refused
+[2025-04-13 02:13:35] INFO: Reconnect attempt 2 of 5
+[2025-04-13 02:13:35] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:13:35] ERROR: Connection refused: Connection refused
+[2025-04-13 02:13:37] INFO: Reconnect attempt 3 of 5
+[2025-04-13 02:13:37] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:13:37] ERROR: Connection refused: Connection refused
+[2025-04-13 02:13:39] INFO: Reconnect attempt 4 of 5
+[2025-04-13 02:13:39] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:13:39] ERROR: Connection refused: Connection refused
+[2025-04-13 02:13:41] INFO: Reconnect attempt 5 of 5
+[2025-04-13 02:13:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:13:41] ERROR: Connection refused: Connection refused
+[2025-04-13 02:13:41] ERROR: Failed to reconnect after 5 attempts
+[2025-04-13 02:13:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:13:47] ERROR: Connection refused: Connection refused
+[2025-04-13 02:13:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:13:52] INFO: Connected to server: localhost:1234
+[2025-04-13 02:13:53] INFO: Disconnecting from server
+[2025-04-13 02:13:53] INFO: Disconnected from server
+[2025-04-13 02:19:13] INFO: Connection manager shut down
+[2025-04-13 02:19:15] INFO: Attempting to reconnect to server
+[2025-04-13 02:19:15] INFO: Reconnect attempt 1 of 5
+[2025-04-13 02:19:15] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:19:15] INFO: Connected to server: localhost:1234
+[2025-04-13 02:19:15] INFO: Reconnection successful
+[2025-04-13 02:19:16] INFO: Dictionary client started
+[2025-04-13 02:19:16] INFO: Server address: localhost
+[2025-04-13 02:19:16] INFO: Server port: 1234
+[2025-04-13 02:19:25] INFO: Disconnecting from server
+[2025-04-13 02:19:25] INFO: Disconnected from server
+[2025-04-13 02:19:25] INFO: Attempting to reconnect to server
+[2025-04-13 02:19:25] INFO: Reconnect attempt 1 of 5
+[2025-04-13 02:19:25] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:19:25] ERROR: Connection refused: Connection refused
+[2025-04-13 02:19:27] INFO: Reconnect attempt 2 of 5
+[2025-04-13 02:19:27] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:19:27] ERROR: Connection refused: Connection refused
+[2025-04-13 02:19:29] INFO: Reconnect attempt 3 of 5
+[2025-04-13 02:19:29] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:19:29] ERROR: Connection refused: Connection refused
+[2025-04-13 02:19:31] INFO: Reconnect attempt 4 of 5
+[2025-04-13 02:19:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:19:31] ERROR: Connection refused: Connection refused
+[2025-04-13 02:19:33] INFO: Reconnect attempt 5 of 5
+[2025-04-13 02:19:33] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:19:33] ERROR: Connection refused: Connection refused
+[2025-04-13 02:19:33] ERROR: Failed to reconnect after 5 attempts
+[2025-04-13 02:19:49] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:19:49] INFO: Connected to server: localhost:1234
+[2025-04-13 02:19:54] INFO: Disconnecting from server
+[2025-04-13 02:19:54] INFO: Disconnected from server
+[2025-04-13 02:20:01] INFO: Attempting to reconnect to server
+[2025-04-13 02:20:01] INFO: Reconnect attempt 1 of 5
+[2025-04-13 02:20:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:20:01] INFO: Connected to server: localhost:1234
+[2025-04-13 02:20:01] INFO: Reconnection successful
+[2025-04-13 02:28:44] INFO: Disconnecting from server
+[2025-04-13 02:28:44] INFO: Disconnected from server
+[2025-04-13 02:28:44] INFO: Connection manager shut down
+[2025-04-13 02:28:47] INFO: Attempting to reconnect to server
+[2025-04-13 02:28:47] INFO: Reconnect attempt 1
+[2025-04-13 02:28:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:28:47] INFO: Connected to server: localhost:1234
+[2025-04-13 02:28:47] INFO: Reconnection successful
+[2025-04-13 02:28:48] INFO: Dictionary client started
+[2025-04-13 02:28:48] INFO: Server address: localhost
+[2025-04-13 02:28:48] INFO: Server port: 1234
+[2025-04-13 02:28:57] INFO: Attempting to reconnect to server
+[2025-04-13 02:28:57] INFO: Reconnect attempt 1
+[2025-04-13 02:28:57] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:28:57] ERROR: Connection refused: Connection refused
+[2025-04-13 02:28:59] INFO: Reconnect attempt 2
+[2025-04-13 02:28:59] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:28:59] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:03] INFO: Reconnect attempt 3
+[2025-04-13 02:29:03] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:03] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:08] INFO: Reconnect attempt 4
+[2025-04-13 02:29:08] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:08] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:13] INFO: Reconnect attempt 5
+[2025-04-13 02:29:13] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:13] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:18] INFO: Reconnect attempt 6
+[2025-04-13 02:29:18] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:18] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:23] INFO: Reconnect attempt 7
+[2025-04-13 02:29:23] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:23] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:28] INFO: Reconnect attempt 8
+[2025-04-13 02:29:28] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:28] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:33] INFO: Reconnect attempt 9
+[2025-04-13 02:29:33] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:33] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:38] INFO: Reconnect attempt 10
+[2025-04-13 02:29:38] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:38] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:43] INFO: Reconnect attempt 11
+[2025-04-13 02:29:43] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:43] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:48] INFO: Reconnect attempt 12
+[2025-04-13 02:29:48] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:48] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:53] INFO: Reconnect attempt 13
+[2025-04-13 02:29:53] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:53] ERROR: Connection refused: Connection refused
+[2025-04-13 02:29:58] INFO: Reconnect attempt 14
+[2025-04-13 02:29:58] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:29:58] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:03] INFO: Reconnect attempt 15
+[2025-04-13 02:30:03] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:03] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:08] INFO: Reconnect attempt 16
+[2025-04-13 02:30:08] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:08] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:13] INFO: Reconnect attempt 17
+[2025-04-13 02:30:13] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:13] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:18] INFO: Reconnect attempt 18
+[2025-04-13 02:30:18] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:18] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:23] INFO: Reconnect attempt 19
+[2025-04-13 02:30:23] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:23] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:28] INFO: Reconnect attempt 20
+[2025-04-13 02:30:28] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:28] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:33] INFO: Reconnect attempt 21
+[2025-04-13 02:30:33] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:33] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:38] INFO: Reconnect attempt 22
+[2025-04-13 02:30:38] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:38] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:43] INFO: Reconnect attempt 23
+[2025-04-13 02:30:43] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:43] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:48] INFO: Reconnect attempt 24
+[2025-04-13 02:30:48] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:48] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:53] INFO: Reconnect attempt 25
+[2025-04-13 02:30:53] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:53] ERROR: Connection refused: Connection refused
+[2025-04-13 02:30:58] INFO: Reconnect attempt 26
+[2025-04-13 02:30:58] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:30:58] ERROR: Connection refused: Connection refused
+[2025-04-13 02:31:03] INFO: Reconnect attempt 27
+[2025-04-13 02:31:03] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:31:03] ERROR: Connection refused: Connection refused
+[2025-04-13 02:31:08] INFO: Reconnect attempt 28
+[2025-04-13 02:31:08] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:31:08] ERROR: Connection refused: Connection refused
+[2025-04-13 02:31:13] INFO: Reconnect attempt 29
+[2025-04-13 02:31:13] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:31:13] ERROR: Connection refused: Connection refused
+[2025-04-13 02:31:18] INFO: Reconnect attempt 30
+[2025-04-13 02:31:18] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:31:18] ERROR: Connection refused: Connection refused
+[2025-04-13 02:31:23] INFO: Reconnect attempt 31
+[2025-04-13 02:31:23] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:31:23] ERROR: Connection refused: Connection refused
+[2025-04-13 02:32:23] INFO: Reconnect attempt 32
+[2025-04-13 02:32:23] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:32:23] ERROR: Connection refused: Connection refused
+[2025-04-13 02:32:28] INFO: Reconnect attempt 33
+[2025-04-13 02:32:28] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:32:28] ERROR: Connection refused: Connection refused
+[2025-04-13 02:48:41] INFO: Reconnect attempt 34
+[2025-04-13 02:48:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:48:41] ERROR: Connection refused: Connection refused
+[2025-04-13 02:48:46] INFO: Reconnect attempt 35
+[2025-04-13 02:48:46] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:48:46] ERROR: Connection refused: Connection refused
+[2025-04-13 02:48:51] INFO: Reconnect attempt 36
+[2025-04-13 02:48:51] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:48:51] ERROR: Connection refused: Connection refused
+[2025-04-13 02:56:34] INFO: Reconnect attempt 37
+[2025-04-13 02:56:34] INFO: Connecting to server: localhost:1234
+[2025-04-13 02:56:34] ERROR: Connection refused: Connection refused
+[2025-04-13 03:01:26] INFO: Reconnect attempt 38
+[2025-04-13 03:01:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:01:26] ERROR: Connection refused: Connection refused
+[2025-04-13 03:01:31] INFO: Reconnect attempt 39
+[2025-04-13 03:01:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:01:31] ERROR: Connection refused: Connection refused
+[2025-04-13 03:01:36] INFO: Reconnect attempt 40
+[2025-04-13 03:01:36] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:01:36] ERROR: Connection refused: Connection refused
+[2025-04-13 03:01:41] INFO: Reconnect attempt 41
+[2025-04-13 03:01:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:01:41] ERROR: Connection refused: Connection refused
+[2025-04-13 03:01:46] INFO: Reconnect attempt 42
+[2025-04-13 03:01:46] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:01:46] ERROR: Connection refused: Connection refused
+[2025-04-13 03:01:51] INFO: Reconnect attempt 43
+[2025-04-13 03:01:51] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:01:51] ERROR: Connection refused: Connection refused
+[2025-04-13 03:01:56] INFO: Reconnect attempt 44
+[2025-04-13 03:01:56] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:01:56] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:01] INFO: Reconnect attempt 45
+[2025-04-13 03:02:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:01] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:06] INFO: Reconnect attempt 46
+[2025-04-13 03:02:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:06] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:11] INFO: Reconnect attempt 47
+[2025-04-13 03:02:11] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:11] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:16] INFO: Reconnect attempt 48
+[2025-04-13 03:02:16] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:16] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:21] INFO: Reconnect attempt 49
+[2025-04-13 03:02:21] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:21] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:26] INFO: Reconnect attempt 50
+[2025-04-13 03:02:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:26] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:31] INFO: Reconnect attempt 51
+[2025-04-13 03:02:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:31] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:36] INFO: Reconnect attempt 52
+[2025-04-13 03:02:36] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:36] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:41] INFO: Reconnect attempt 53
+[2025-04-13 03:02:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:41] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:46] INFO: Reconnect attempt 54
+[2025-04-13 03:02:46] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:46] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:51] INFO: Reconnect attempt 55
+[2025-04-13 03:02:51] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:51] ERROR: Connection refused: Connection refused
+[2025-04-13 03:02:56] INFO: Reconnect attempt 56
+[2025-04-13 03:02:56] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:02:56] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:01] INFO: Reconnect attempt 57
+[2025-04-13 03:03:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:01] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:06] INFO: Reconnect attempt 58
+[2025-04-13 03:03:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:06] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:11] INFO: Reconnect attempt 59
+[2025-04-13 03:03:11] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:11] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:16] INFO: Reconnect attempt 60
+[2025-04-13 03:03:16] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:16] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:21] INFO: Reconnect attempt 61
+[2025-04-13 03:03:21] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:21] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:26] INFO: Reconnect attempt 62
+[2025-04-13 03:03:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:26] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:31] INFO: Reconnect attempt 63
+[2025-04-13 03:03:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:31] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:36] INFO: Reconnect attempt 64
+[2025-04-13 03:03:36] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:36] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:41] INFO: Reconnect attempt 65
+[2025-04-13 03:03:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:41] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:46] INFO: Reconnect attempt 66
+[2025-04-13 03:03:46] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:46] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:51] INFO: Reconnect attempt 67
+[2025-04-13 03:03:51] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:51] ERROR: Connection refused: Connection refused
+[2025-04-13 03:03:56] INFO: Reconnect attempt 68
+[2025-04-13 03:03:56] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:03:56] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:01] INFO: Reconnect attempt 69
+[2025-04-13 03:04:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:01] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:06] INFO: Reconnect attempt 70
+[2025-04-13 03:04:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:06] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:11] INFO: Reconnect attempt 71
+[2025-04-13 03:04:11] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:11] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:16] INFO: Reconnect attempt 72
+[2025-04-13 03:04:16] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:16] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:21] INFO: Reconnect attempt 73
+[2025-04-13 03:04:21] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:21] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:26] INFO: Reconnect attempt 74
+[2025-04-13 03:04:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:26] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:31] INFO: Reconnect attempt 75
+[2025-04-13 03:04:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:31] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:36] INFO: Reconnect attempt 76
+[2025-04-13 03:04:36] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:36] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:41] INFO: Reconnect attempt 77
+[2025-04-13 03:04:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:41] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:46] INFO: Reconnect attempt 78
+[2025-04-13 03:04:46] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:46] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:51] INFO: Reconnect attempt 79
+[2025-04-13 03:04:51] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:51] ERROR: Connection refused: Connection refused
+[2025-04-13 03:04:56] INFO: Reconnect attempt 80
+[2025-04-13 03:04:56] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:04:56] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:01] INFO: Reconnect attempt 81
+[2025-04-13 03:05:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:01] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:06] INFO: Reconnect attempt 82
+[2025-04-13 03:05:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:06] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:11] INFO: Reconnect attempt 83
+[2025-04-13 03:05:11] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:11] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:16] INFO: Reconnect attempt 84
+[2025-04-13 03:05:16] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:16] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:21] INFO: Reconnect attempt 85
+[2025-04-13 03:05:21] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:21] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:26] INFO: Reconnect attempt 86
+[2025-04-13 03:05:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:26] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:31] INFO: Reconnect attempt 87
+[2025-04-13 03:05:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:31] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:36] INFO: Reconnect attempt 88
+[2025-04-13 03:05:36] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:36] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:41] INFO: Reconnect attempt 89
+[2025-04-13 03:05:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:41] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:46] INFO: Reconnect attempt 90
+[2025-04-13 03:05:46] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:46] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:51] INFO: Reconnect attempt 91
+[2025-04-13 03:05:51] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:51] ERROR: Connection refused: Connection refused
+[2025-04-13 03:05:56] INFO: Reconnect attempt 92
+[2025-04-13 03:05:56] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:05:56] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:01] INFO: Reconnect attempt 93
+[2025-04-13 03:06:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:01] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:06] INFO: Reconnect attempt 94
+[2025-04-13 03:06:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:06] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:11] INFO: Reconnect attempt 95
+[2025-04-13 03:06:11] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:11] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:16] INFO: Reconnect attempt 96
+[2025-04-13 03:06:16] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:16] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:21] INFO: Reconnect attempt 97
+[2025-04-13 03:06:21] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:21] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:26] INFO: Reconnect attempt 98
+[2025-04-13 03:06:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:26] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:31] INFO: Reconnect attempt 99
+[2025-04-13 03:06:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:31] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:36] INFO: Reconnect attempt 100
+[2025-04-13 03:06:36] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:36] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:41] INFO: Reconnect attempt 101
+[2025-04-13 03:06:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:41] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:46] INFO: Reconnect attempt 102
+[2025-04-13 03:06:46] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:46] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:51] INFO: Reconnect attempt 103
+[2025-04-13 03:06:51] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:51] ERROR: Connection refused: Connection refused
+[2025-04-13 03:06:56] INFO: Reconnect attempt 104
+[2025-04-13 03:06:56] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:06:56] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:01] INFO: Reconnect attempt 105
+[2025-04-13 03:07:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:01] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:06] INFO: Reconnect attempt 106
+[2025-04-13 03:07:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:06] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:11] INFO: Reconnect attempt 107
+[2025-04-13 03:07:11] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:11] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:16] INFO: Reconnect attempt 108
+[2025-04-13 03:07:16] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:16] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:21] INFO: Reconnect attempt 109
+[2025-04-13 03:07:21] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:21] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:26] INFO: Reconnect attempt 110
+[2025-04-13 03:07:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:26] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:31] INFO: Reconnect attempt 111
+[2025-04-13 03:07:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:31] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:36] INFO: Reconnect attempt 112
+[2025-04-13 03:07:36] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:36] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:41] INFO: Reconnect attempt 113
+[2025-04-13 03:07:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:41] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:47] INFO: Reconnect attempt 114
+[2025-04-13 03:07:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:47] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:52] INFO: Reconnect attempt 115
+[2025-04-13 03:07:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:52] ERROR: Connection refused: Connection refused
+[2025-04-13 03:07:57] INFO: Reconnect attempt 116
+[2025-04-13 03:07:57] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:07:57] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:02] INFO: Reconnect attempt 117
+[2025-04-13 03:08:02] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:02] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:07] INFO: Reconnect attempt 118
+[2025-04-13 03:08:07] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:07] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:12] INFO: Reconnect attempt 119
+[2025-04-13 03:08:12] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:12] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:17] INFO: Reconnect attempt 120
+[2025-04-13 03:08:17] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:17] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:22] INFO: Reconnect attempt 121
+[2025-04-13 03:08:22] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:22] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:27] INFO: Reconnect attempt 122
+[2025-04-13 03:08:27] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:27] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:32] INFO: Reconnect attempt 123
+[2025-04-13 03:08:32] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:32] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:37] INFO: Reconnect attempt 124
+[2025-04-13 03:08:37] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:37] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:42] INFO: Reconnect attempt 125
+[2025-04-13 03:08:42] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:42] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:47] INFO: Reconnect attempt 126
+[2025-04-13 03:08:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:47] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:52] INFO: Reconnect attempt 127
+[2025-04-13 03:08:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:52] ERROR: Connection refused: Connection refused
+[2025-04-13 03:08:57] INFO: Reconnect attempt 128
+[2025-04-13 03:08:57] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:08:57] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:02] INFO: Reconnect attempt 129
+[2025-04-13 03:09:02] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:02] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:07] INFO: Reconnect attempt 130
+[2025-04-13 03:09:07] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:07] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:12] INFO: Reconnect attempt 131
+[2025-04-13 03:09:12] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:12] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:17] INFO: Reconnect attempt 132
+[2025-04-13 03:09:17] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:17] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:22] INFO: Reconnect attempt 133
+[2025-04-13 03:09:22] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:22] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:27] INFO: Reconnect attempt 134
+[2025-04-13 03:09:27] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:27] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:32] INFO: Reconnect attempt 135
+[2025-04-13 03:09:32] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:32] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:37] INFO: Reconnect attempt 136
+[2025-04-13 03:09:37] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:37] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:42] INFO: Reconnect attempt 137
+[2025-04-13 03:09:42] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:42] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:47] INFO: Reconnect attempt 138
+[2025-04-13 03:09:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:47] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:52] INFO: Reconnect attempt 139
+[2025-04-13 03:09:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:52] ERROR: Connection refused: Connection refused
+[2025-04-13 03:09:57] INFO: Reconnect attempt 140
+[2025-04-13 03:09:57] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:09:57] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:02] INFO: Reconnect attempt 141
+[2025-04-13 03:10:02] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:02] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:07] INFO: Reconnect attempt 142
+[2025-04-13 03:10:07] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:07] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:12] INFO: Reconnect attempt 143
+[2025-04-13 03:10:12] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:12] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:17] INFO: Reconnect attempt 144
+[2025-04-13 03:10:17] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:17] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:22] INFO: Reconnect attempt 145
+[2025-04-13 03:10:22] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:22] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:27] INFO: Reconnect attempt 146
+[2025-04-13 03:10:27] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:27] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:32] INFO: Reconnect attempt 147
+[2025-04-13 03:10:32] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:32] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:37] INFO: Reconnect attempt 148
+[2025-04-13 03:10:37] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:37] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:42] INFO: Reconnect attempt 149
+[2025-04-13 03:10:42] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:42] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:47] INFO: Reconnect attempt 150
+[2025-04-13 03:10:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:47] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:52] INFO: Reconnect attempt 151
+[2025-04-13 03:10:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:52] ERROR: Connection refused: Connection refused
+[2025-04-13 03:10:57] INFO: Reconnect attempt 152
+[2025-04-13 03:10:57] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:10:57] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:02] INFO: Reconnect attempt 153
+[2025-04-13 03:11:02] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:02] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:07] INFO: Reconnect attempt 154
+[2025-04-13 03:11:07] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:07] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:12] INFO: Reconnect attempt 155
+[2025-04-13 03:11:12] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:12] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:17] INFO: Reconnect attempt 156
+[2025-04-13 03:11:17] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:17] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:22] INFO: Reconnect attempt 157
+[2025-04-13 03:11:22] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:22] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:27] INFO: Reconnect attempt 158
+[2025-04-13 03:11:27] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:27] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:32] INFO: Reconnect attempt 159
+[2025-04-13 03:11:32] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:32] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:37] INFO: Reconnect attempt 160
+[2025-04-13 03:11:37] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:37] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:42] INFO: Reconnect attempt 161
+[2025-04-13 03:11:42] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:42] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:47] INFO: Reconnect attempt 162
+[2025-04-13 03:11:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:47] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:52] INFO: Reconnect attempt 163
+[2025-04-13 03:11:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:52] ERROR: Connection refused: Connection refused
+[2025-04-13 03:11:57] INFO: Reconnect attempt 164
+[2025-04-13 03:11:57] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:11:57] ERROR: Connection refused: Connection refused
+[2025-04-13 03:12:02] INFO: Reconnect attempt 165
+[2025-04-13 03:12:02] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:02] ERROR: Connection refused: Connection refused
+[2025-04-13 03:12:07] INFO: Reconnect attempt 166
+[2025-04-13 03:12:07] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:07] ERROR: Connection refused: Connection refused
+[2025-04-13 03:12:12] INFO: Reconnect attempt 167
+[2025-04-13 03:12:12] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:12] ERROR: Connection refused: Connection refused
+[2025-04-13 03:12:17] INFO: Reconnect attempt 168
+[2025-04-13 03:12:17] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:17] ERROR: Connection refused: Connection refused
+[2025-04-13 03:12:22] INFO: Reconnect attempt 169
+[2025-04-13 03:12:22] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:22] ERROR: Connection refused: Connection refused
+[2025-04-13 03:12:24] INFO: Connection manager shut down
+[2025-04-13 03:12:26] INFO: Reconnect attempt 1
+[2025-04-13 03:12:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:26] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:12:27] INFO: Dictionary client started
+[2025-04-13 03:12:27] INFO: Server address: localhost
+[2025-04-13 03:12:27] INFO: Server port: 1234
+[2025-04-13 03:12:29] INFO: Reconnect attempt 2
+[2025-04-13 03:12:29] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:29] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:12:35] INFO: Reconnect attempt 3
+[2025-04-13 03:12:35] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:35] INFO: Connected to server: localhost:1234
+[2025-04-13 03:12:35] INFO: Reconnection successful
+[2025-04-13 03:12:45] INFO: Reconnect attempt 1
+[2025-04-13 03:12:45] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:45] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:12:48] INFO: Reconnect attempt 2
+[2025-04-13 03:12:48] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:48] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:12:54] INFO: Reconnect attempt 3
+[2025-04-13 03:12:54] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:12:54] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:13:03] INFO: Reconnect attempt 4
+[2025-04-13 03:13:03] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:13:03] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:13:31] INFO: Reconnect attempt 1
+[2025-04-13 03:13:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:13:31] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:13:34] INFO: Reconnect attempt 2
+[2025-04-13 03:13:34] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:13:34] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:13:40] INFO: Reconnect attempt 3
+[2025-04-13 03:13:40] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:13:40] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:13:49] INFO: Reconnect attempt 4
+[2025-04-13 03:13:49] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:13:49] INFO: Connected to server: localhost:1234
+[2025-04-13 03:13:49] INFO: Reconnection successful
+[2025-04-13 03:14:21] INFO: Disconnected from server
+[2025-04-13 03:14:32] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:14:32] INFO: Connected to server: localhost:1234
+[2025-04-13 03:14:38] INFO: Disconnected from server
+[2025-04-13 03:14:54] INFO: Reconnect attempt 1
+[2025-04-13 03:14:54] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:14:54] INFO: Connected to server: localhost:1234
+[2025-04-13 03:14:54] INFO: Reconnection successful
+[2025-04-13 03:15:08] INFO: Disconnected from server
+[2025-04-13 03:17:37] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:17:37] INFO: Connected to server: localhost:1234
+[2025-04-13 03:17:57] INFO: Reconnect attempt 1
+[2025-04-13 03:17:57] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:17:57] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:18:00] INFO: Reconnect attempt 2
+[2025-04-13 03:18:00] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:18:00] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:18:06] INFO: Reconnect attempt 3
+[2025-04-13 03:18:06] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:18:06] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:18:15] INFO: Reconnect attempt 4
+[2025-04-13 03:18:15] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:18:15] INFO: Connected to server: localhost:1234
+[2025-04-13 03:18:15] INFO: Reconnection successful
+[2025-04-13 03:19:25] INFO: Disconnected from server
+[2025-04-13 03:19:33] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:19:33] INFO: Connected to server: localhost:1234
+[2025-04-13 03:19:36] INFO: Disconnected from server
+[2025-04-13 03:19:48] INFO: Reconnect attempt 1
+[2025-04-13 03:19:48] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:19:48] INFO: Connected to server: localhost:1234
+[2025-04-13 03:19:48] INFO: Reconnection successful
+[2025-04-13 03:20:33] INFO: Disconnected from server
+[2025-04-13 03:20:39] INFO: Reconnect attempt 1
+[2025-04-13 03:20:39] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:20:39] INFO: Connected to server: localhost:1234
+[2025-04-13 03:20:39] INFO: Reconnection successful
+[2025-04-13 03:20:49] INFO: Reconnect attempt 1
+[2025-04-13 03:20:49] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:20:49] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:20:52] INFO: Reconnect attempt 2
+[2025-04-13 03:20:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:20:52] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:20:58] INFO: Reconnect attempt 3
+[2025-04-13 03:20:58] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:20:58] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:21:07] INFO: Reconnect attempt 4
+[2025-04-13 03:21:07] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:21:07] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:21:19] INFO: Reconnect attempt 5
+[2025-04-13 03:21:19] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:21:19] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:21:34] INFO: Reconnect attempt 6
+[2025-04-13 03:21:34] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:21:34] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:21:52] INFO: Reconnect attempt 7
+[2025-04-13 03:21:52] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:21:52] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:21:53] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:21:53] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:21:55] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:21:55] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:22:13] INFO: Reconnect attempt 8
+[2025-04-13 03:22:13] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:22:13] INFO: Connected to server: localhost:1234
+[2025-04-13 03:22:13] INFO: Reconnection successful
+[2025-04-13 03:22:23] INFO: Reconnect attempt 1
+[2025-04-13 03:22:23] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:22:23] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:22:26] INFO: Reconnect attempt 2
+[2025-04-13 03:22:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:22:26] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:22:32] INFO: Reconnect attempt 3
+[2025-04-13 03:22:32] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:22:32] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:22:41] INFO: Reconnect attempt 4
+[2025-04-13 03:22:41] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:22:41] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:22:53] INFO: Reconnect attempt 5
+[2025-04-13 03:22:53] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:22:53] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:23:08] INFO: Reconnect attempt 6
+[2025-04-13 03:23:08] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:23:08] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:23:26] INFO: Reconnect attempt 7
+[2025-04-13 03:23:26] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:23:26] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:23:47] INFO: Reconnect attempt 8
+[2025-04-13 03:23:47] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:23:47] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:24:11] INFO: Reconnect attempt 9
+[2025-04-13 03:24:11] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:24:11] INFO: Connected to server: localhost:1234
+[2025-04-13 03:24:11] INFO: Reconnection successful
+[2025-04-13 03:24:31] INFO: Reconnect attempt 1
+[2025-04-13 03:24:31] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:24:31] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:24:34] INFO: Reconnect attempt 2
+[2025-04-13 03:24:34] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:24:34] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:24:40] INFO: Reconnect attempt 3
+[2025-04-13 03:24:40] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:24:40] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:24:49] INFO: Reconnect attempt 4
+[2025-04-13 03:24:49] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:24:49] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:25:01] INFO: Reconnect attempt 5
+[2025-04-13 03:25:01] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:25:01] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:25:16] INFO: Reconnect attempt 6
+[2025-04-13 03:25:16] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:25:16] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:25:34] INFO: Reconnect attempt 7
+[2025-04-13 03:25:34] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:25:34] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:25:55] INFO: Reconnect attempt 8
+[2025-04-13 03:25:55] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:25:55] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:26:19] INFO: Reconnect attempt 9
+[2025-04-13 03:26:19] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:26:19] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:26:46] INFO: Reconnect attempt 10
+[2025-04-13 03:26:46] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:26:46] ERROR: Failed to connect to server: Connection refused
+[2025-04-13 03:27:16] INFO: Reconnect attempt 11
+[2025-04-13 03:27:16] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:27:16] INFO: Connected to server: localhost:1234
+[2025-04-13 03:27:16] INFO: Reconnection successful
+[2025-04-13 03:29:57] INFO: Reconnect attempt 1
+[2025-04-13 03:29:57] INFO: Connecting to server: 127.0.1.1:1234
+[2025-04-13 03:29:58] INFO: Dictionary client started
+[2025-04-13 03:29:58] INFO: Server address: 127.0.1.1
+[2025-04-13 03:29:58] INFO: Server port: 1234
+[2025-04-13 03:30:05] INFO: Connecting to server: 127.0.1.1:1234
+[2025-04-13 03:30:23] INFO: Disconnected from server
+[2025-04-13 03:30:23] INFO: Disconnected from server
+[2025-04-13 03:30:23] INFO: Connection manager shut down
+[2025-04-13 03:30:41] INFO: Reconnect attempt 1
+[2025-04-13 03:30:41] INFO: Connecting to server: 127.0.0.1:1234
+[2025-04-13 03:30:41] INFO: Connected to server: 127.0.0.1:1234
+[2025-04-13 03:30:41] INFO: Reconnection successful
+[2025-04-13 03:30:42] INFO: Dictionary client started
+[2025-04-13 03:30:42] INFO: Server address: 127.0.0.1
+[2025-04-13 03:30:42] INFO: Server port: 1234
+[2025-04-13 03:31:52] INFO: Disconnected from server
+[2025-04-13 03:31:58] INFO: Disconnected from server
+[2025-04-13 03:32:09] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:32:09] INFO: Connected to server: localhost:1234
+[2025-04-13 03:32:11] INFO: Connecting to server: 127.0.0.1:1234
+[2025-04-13 03:32:11] INFO: Connected to server: 127.0.0.1:1234
+[2025-04-13 03:32:31] INFO: Disconnected from server
+[2025-04-13 03:32:31] INFO: Disconnected from server
+[2025-04-13 03:32:31] INFO: Connection manager shut down
+[2025-04-13 03:32:34] INFO: Disconnected from server
+[2025-04-13 03:32:34] INFO: Disconnected from server
+[2025-04-13 03:32:34] INFO: Connection manager shut down
+[2025-04-13 03:34:32] INFO: Reconnect attempt 1
+[2025-04-13 03:34:32] INFO: Connecting to server: localhost:1234
+[2025-04-13 03:34:32] INFO: Connected to server: localhost:1234
+[2025-04-13 03:34:32] INFO: Reconnection successful
+[2025-04-13 03:34:33] INFO: Dictionary client started
+[2025-04-13 03:34:33] INFO: Server address: localhost
+[2025-04-13 03:34:33] INFO: Server port: 1234

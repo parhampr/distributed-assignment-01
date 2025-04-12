@@ -143,7 +143,7 @@ public class Dictionary {
             }
         }
 
-        Logger.info("Saved " + dictionary.size() + " words to dictionary file: " + dictionaryFile.getName());
+        Logger.info("Updated dictionary file " + dictionaryFile.getName() + " with " + dictionary.size() + " words");
     }
 
     /**
@@ -197,7 +197,7 @@ public class Dictionary {
         Logger.debug("Removing word: " + word);
 
         if (!dictionary.containsKey(word)) {
-            return false; // Word not found
+            return false;
         }
 
         dictionary.remove(word);

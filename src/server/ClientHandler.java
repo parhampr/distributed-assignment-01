@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.List;
+import java.util.UUID;
 
 import protocol.Request;
 import protocol.Response;
@@ -23,7 +24,7 @@ public class ClientHandler implements Runnable {
      * Creates a new ClientHandler for the specified client socket.
      *
      * @param clientSocket the client socket
-     * @param dictionary the dictionary to use
+     * @param dictionary   the dictionary to use
      */
     public ClientHandler(Socket clientSocket, Dictionary dictionary) {
         this.clientSocket = clientSocket;
@@ -36,49 +37,58 @@ public class ClientHandler implements Runnable {
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
 
-            Logger.info("Client connected: " + clientSocket.getInetAddress());
+            String connectionId = UUID.randomUUID().toString();
+            String clientAddress = clientSocket.getInetAddress().getHostAddress();
+            int clientPort = clientSocket.getPort();
 
-            // Process client requests
+            Logger.info(String.format("Client connected: address=%s, port=%d, connectionId=%s", clientAddress, clientPort, connectionId));
+
             while (running && !Thread.currentThread().isInterrupted() && !clientSocket.isClosed()) {
                 try {
-                    // Read request from client
-                    Object obj = in.readObject();
-                    if (!(obj instanceof Request request)) {
+                    if (!(in.readObject() instanceof Request request)) {
                         continue;
                     }
 
-                    Logger.debug("Received request: " + request);
+                    if (request.getOperation() == Request.OperationType.HEARTBEAT) {
+                        Logger.debug(String.format("Heartbeat received: address=%s, connectionId=%s", clientAddress, connectionId));
+                    } else {
+                        Logger.info(String.format("Request received: address=%s, connectionId=%s, operation=%s, details=%s", clientAddress, connectionId, request.getOperation(), request));
+                    }
 
-                    // Process request and send response
                     Response response = processRequest(request);
                     out.writeObject(response);
                     out.flush();
 
-                    Logger.debug("Sent response: " + response);
+                    if (request.getOperation() == Request.OperationType.HEARTBEAT) {
+                        Logger.debug(String.format("Heartbeat response sent: address=%s, connectionId=%s", clientAddress, connectionId));
+                    } else {
+                        Logger.info(String.format("Response sent: address=%s, connectionId=%s, status=%s, details=%s", clientAddress, connectionId, response.getStatus(), response));
+                    }
+
                 } catch (ClassNotFoundException e) {
-                    Logger.error("Invalid message received", e);
+                    Logger.error(String.format("Invalid message: address=%s, connectionId=%s, error=%s", clientAddress, connectionId, e.getMessage()), e);
                 } catch (EOFException e) {
                     // Client closed connection normally
-                    Logger.debug("Client closed connection");
+                    Logger.info(String.format("Connection closed by client: address=%s, connectionId=%s", clientAddress, connectionId));
                     break;
                 } catch (SocketException e) {
-                    // Socket error (client disconnected abruptly)
-                    Logger.debug("Socket error: " + e.getMessage());
+                    Logger.debug(String.format("Socket error: address=%s, connectionId=%s, error=%s", clientAddress, connectionId, e.getMessage()));
                     break;
                 } catch (IOException e) {
                     // Other IO error
-                    Logger.error("IO error handling client", e);
+                    Logger.error(String.format("IO error: address=%s, connectionId=%s, error=%s", clientAddress, connectionId, e.getMessage()), e);
                     break;
                 }
             }
         } catch (IOException e) {
             if (running) {
-                Logger.error("Error handling client", e);
+                Logger.error(String.format("Client handler error: socket=%s, error=%s", clientSocket, e.getMessage()), e);
             }
         } finally {
             close();
         }
     }
+
     /**
      * Processes a client request and generates a response.
      *
@@ -93,27 +103,25 @@ public class ClientHandler implements Runnable {
                 case REMOVE -> processRemove(request);
                 case ADD_MEANING -> processAddMeaning(request);
                 case UPDATE_MEANING -> processUpdateMeaning(request);
-                default -> new Response(Response.StatusCode.ERROR, request.getWord(),
-                        "Unknown operation: " + request.getOperation());
+                case HEARTBEAT -> new Response(Response.StatusCode.SUCCESS, "_heartbeat_", "Server alive");
+                default ->
+                        new Response(Response.StatusCode.ERROR, request.getWord(), "Unknown operation: " + request.getOperation());
             };
         } catch (Exception e) {
             Logger.error("Error processing request", e);
-            return new Response(Response.StatusCode.ERROR, request.getWord(),
-                    "Server error: " + e.getMessage());
+            return new Response(Response.StatusCode.ERROR, request.getWord(), "Server error: " + e.getMessage());
         }
     }
 
     private Response processSearch(Request request) {
         String word = request.getWord();
-        List<String> meanings = dictionary.search(word);
 
+        List<String> meanings = dictionary.search(word);
         if (meanings == null || meanings.isEmpty()) {
-            return new Response(Response.StatusCode.WORD_NOT_FOUND, word,
-                    "Word not found in dictionary");
+            return new Response(Response.StatusCode.WORD_NOT_FOUND, word, "Word not found in dictionary");
         }
 
-        return new Response(Response.StatusCode.SUCCESS, word,
-                meanings.toArray(new String[0]));
+        return new Response(Response.StatusCode.SUCCESS, word, meanings.toArray(new String[0]));
     }
 
     private Response processAdd(Request request) throws IOException {
@@ -121,18 +129,15 @@ public class ClientHandler implements Runnable {
         String[] meanings = request.getMeanings();
 
         if (meanings == null || meanings.length == 0) {
-            return new Response(Response.StatusCode.ERROR, word,
-                    "Word must have at least one meaning");
+            return new Response(Response.StatusCode.ERROR, word, "Word must have at least one meaning");
         }
 
         boolean added = dictionary.addWord(word, meanings);
         if (!added) {
-            return new Response(Response.StatusCode.DUPLICATE_WORD, word,
-                    "Word already exists in dictionary");
+            return new Response(Response.StatusCode.DUPLICATE_WORD, word, "Word already exists in dictionary");
         }
 
-        return new Response(Response.StatusCode.SUCCESS, word,
-                "Word added successfully");
+        return new Response(Response.StatusCode.SUCCESS, word, "Word added successfully");
     }
 
     private Response processRemove(Request request) throws IOException {
@@ -140,12 +145,10 @@ public class ClientHandler implements Runnable {
         boolean removed = dictionary.removeWord(word);
 
         if (!removed) {
-            return new Response(Response.StatusCode.WORD_NOT_FOUND, word,
-                    "Word not found in dictionary");
+            return new Response(Response.StatusCode.WORD_NOT_FOUND, word, "Word not found in dictionary");
         }
 
-        return new Response(Response.StatusCode.SUCCESS, word,
-                "Word removed successfully");
+        return new Response(Response.StatusCode.SUCCESS, word, "Word removed successfully");
     }
 
     private Response processAddMeaning(Request request) throws IOException {
@@ -153,24 +156,20 @@ public class ClientHandler implements Runnable {
         String[] meanings = request.getMeanings();
 
         if (meanings == null || meanings.length == 0) {
-            return new Response(Response.StatusCode.ERROR, word,
-                    "No meaning provided");
+            return new Response(Response.StatusCode.ERROR, word, "No meaning provided");
         }
 
         boolean added = dictionary.addMeaning(word, meanings[0]);
         if (!added) {
             List<String> existingMeanings = dictionary.search(word);
             if (existingMeanings == null) {
-                return new Response(Response.StatusCode.WORD_NOT_FOUND, word,
-                        "Word not found in dictionary");
+                return new Response(Response.StatusCode.WORD_NOT_FOUND, word, "Word not found in dictionary");
             } else {
-                return new Response(Response.StatusCode.MEANING_EXISTS, word,
-                        "Meaning already exists for this word");
+                return new Response(Response.StatusCode.MEANING_EXISTS, word, "Meaning already exists for this word");
             }
         }
 
-        return new Response(Response.StatusCode.SUCCESS, word,
-                "Meaning added successfully");
+        return new Response(Response.StatusCode.SUCCESS, word, "Meaning added successfully");
     }
 
     private Response processUpdateMeaning(Request request) throws IOException {
@@ -179,24 +178,20 @@ public class ClientHandler implements Runnable {
         String[] meanings = request.getMeanings();
 
         if (oldMeaning == null || meanings == null || meanings.length == 0) {
-            return new Response(Response.StatusCode.ERROR, word,
-                    "Missing old or new meaning");
+            return new Response(Response.StatusCode.ERROR, word, "Missing old or new meaning");
         }
 
         boolean updated = dictionary.updateMeaning(word, oldMeaning, meanings[0]);
         if (!updated) {
             List<String> existingMeanings = dictionary.search(word);
             if (existingMeanings == null) {
-                return new Response(Response.StatusCode.WORD_NOT_FOUND, word,
-                        "Word not found in dictionary");
+                return new Response(Response.StatusCode.WORD_NOT_FOUND, word, "Word not found in dictionary");
             } else {
-                return new Response(Response.StatusCode.MEANING_NOT_FOUND, word,
-                        "Old meaning not found for this word");
+                return new Response(Response.StatusCode.MEANING_NOT_FOUND, word, "Old meaning not found for this word");
             }
         }
 
-        return new Response(Response.StatusCode.SUCCESS, word,
-                "Meaning updated successfully");
+        return new Response(Response.StatusCode.SUCCESS, word, "Meaning updated successfully");
     }
 
     /**

@@ -15,7 +15,8 @@ public class Request extends Message {
         ADD,            // Add a new word with meanings
         REMOVE,         // Remove a word
         ADD_MEANING,    // Add a meaning to an existing word
-        UPDATE_MEANING  // Update a meaning of an existing word
+        UPDATE_MEANING,  // Update a meaning of an existing word
+        HEARTBEAT
     }
 
     private final OperationType operation;
@@ -51,7 +52,7 @@ public class Request extends Message {
     }
 
     public String getWord() {
-        return word;
+        return word.toLowerCase();
     }
 
     public String[] getMeanings() {
@@ -66,7 +67,7 @@ public class Request extends Message {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Request [operation=").append(operation)
-                .append(", word=").append(word);
+                .append(", word=").append(getWord());
 
         if (meanings != null && meanings.length > 0) {
             sb.append(", meanings=[");

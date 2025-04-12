@@ -21,11 +21,9 @@ public class DictionaryClient {
      */
     public static void main(String[] args) {
         try {
-            // Set system look and feel
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-                // Continue with default look and feel
+            } catch (Exception _) {
             }
 
             // Setup logging
@@ -35,6 +33,7 @@ public class DictionaryClient {
             // Parse command-line arguments
             String serverAddress = Constants.DEFAULT_SERVER_ADDRESS;
             int serverPort = Constants.DEFAULT_PORT;
+            boolean autoConnect = true;
 
             if (args.length >= 1) {
                 serverAddress = args[0];
@@ -54,15 +53,13 @@ public class DictionaryClient {
             final String finalServerAddress = serverAddress;
             final int finalServerPort = serverPort;
             connectionManager = new ConnectionManager(finalServerAddress, finalServerPort);
-
-            // Auto-connect on startup
-            boolean autoConnect = args.length <= 0; // Auto-connect if no args provided
+            connectionManager.setAutoConnect(autoConnect);
 
             SwingUtilities.invokeLater(() -> {
                 ClientGUI gui = new ClientGUI(connectionManager);
                 gui.setVisible(true);
 
-                // Add shutdown hook for proper cleanup
+                // Add shutdown for proper cleanup
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                     if (connectionManager != null) {
                         connectionManager.shutdown();
@@ -84,11 +81,6 @@ public class DictionaryClient {
                 Logger.info("Dictionary client started");
                 Logger.info("Server address: " + finalServerAddress);
                 Logger.info("Server port: " + finalServerPort);
-
-                // Auto-connect if specified
-                if (autoConnect) {
-                    new Thread(() -> connectionManager.connect()).start();
-                }
             });
         } catch (IOException e) {
             Logger.error("Failed to start client", e);
