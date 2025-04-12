@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.text.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +36,10 @@ public class ServerGUI extends JFrame {
     private JCheckBox consoleOutputCheckbox;
     private JProgressBar memoryUsageBar;
     private JLabel memoryUsageLabel;
+    private JTextField searchField;
+    private JButton searchButton;
+    private JButton clearSearchButton;
+    private JLabel searchStatusLabel;
 
     private final int port;
     private final String dictionaryFile;
@@ -44,6 +49,13 @@ public class ServerGUI extends JFrame {
     // Cache icons to avoid reloading them
     private ImageIcon runningIcon;
     private ImageIcon stoppedIcon;
+
+    // For search functionality
+    private Highlighter.HighlightPainter searchHighlightPainter;
+    private Highlighter.HighlightPainter currentHighlightPainter;
+    private ArrayList<Integer> searchResults = new ArrayList<>();
+    private int currentSearchResultIndex = -1;
+    private Object currentHighlight = null;
 
     /**
      * Creates a new ServerGUI with the specified port and dictionary file.
@@ -58,6 +70,10 @@ public class ServerGUI extends JFrame {
         // Preload icons
         this.runningIcon = createIcon("start.png", 20, 20);
         this.stoppedIcon = createIcon("stop.png", 20, 20);
+
+        // Initialize search highlighters
+        this.searchHighlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255, 255, 0, 128)); // Light yellow
+        this.currentHighlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255, 165, 0, 180)); // Orange, more opaque
 
         initializeUI();
 
@@ -206,7 +222,7 @@ public class ServerGUI extends JFrame {
     }
 
     /**
-     * Creates the log panel.
+     * Creates the log panel with search functionality.
      *
      * @return the log panel
      */
@@ -215,15 +231,67 @@ public class ServerGUI extends JFrame {
         panel.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(), "Server Log",
                 TitledBorder.LEFT, TitledBorder.TOP, new Font(Font.SANS_SERIF, Font.BOLD, 12)));
 
+        // Search panel at the top of log panel
+        JPanel searchPanel = new JPanel(new BorderLayout(5, 0));
+
+        // Left side with search field
+        JPanel searchFieldPanel = new JPanel(new BorderLayout(5, 0));
+        searchField = new JTextField();
+        searchField.setToolTipText("Enter search term");
+
+        // Add key listener for Enter key
+        searchField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    performSearch();
+                }
+            }
+        });
+
+        searchFieldPanel.add(new JLabel("Search: "), BorderLayout.WEST);
+        searchFieldPanel.add(searchField, BorderLayout.CENTER);
+
+        // Right side with buttons
+        JPanel searchButtonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+
+        searchButton = new JButton("Find");
+        searchButton.addActionListener(e -> performSearch());
+
+        JButton nextButton = new JButton("Next");
+        nextButton.addActionListener(e -> findNextResult());
+
+        JButton prevButton = new JButton("Previous");
+        prevButton.addActionListener(e -> findPreviousResult());
+
+        clearSearchButton = new JButton("Clear");
+        clearSearchButton.addActionListener(e -> clearSearch());
+
+        searchButtonsPanel.add(searchButton);
+        searchButtonsPanel.add(nextButton);
+        searchButtonsPanel.add(prevButton);
+        searchButtonsPanel.add(clearSearchButton);
+
+        // Add search status label
+        searchStatusLabel = new JLabel("");
+        searchStatusLabel.setForeground(new Color(0, 100, 0)); // Dark green
+        searchButtonsPanel.add(Box.createHorizontalStrut(10));
+        searchButtonsPanel.add(searchStatusLabel);
+
+        searchPanel.add(searchFieldPanel, BorderLayout.CENTER);
+        searchPanel.add(searchButtonsPanel, BorderLayout.EAST);
+
+        // Log text area
         logArea = new JTextArea();
         logArea.setEditable(false);
         logArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         logArea.setBackground(new Color(250, 250, 250));
-
         logArea.getDocument().putProperty("maxLength", 50000);
 
         JScrollPane scrollPane = new JScrollPane(logArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        panel.add(searchPanel, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = getButtonPanel();
@@ -232,6 +300,9 @@ public class ServerGUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Creates and returns the button panel for log operations.
+     */
     private JPanel getButtonPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -243,11 +314,152 @@ public class ServerGUI extends JFrame {
         // Add clear button
         JButton clearButton = new JButton("Clear Log");
         clearButton.setToolTipText("Clear the log display");
-        clearButton.addActionListener(e -> logArea.setText(""));
+        clearButton.addActionListener(e -> {
+            logArea.setText("");
+            clearSearch();
+        });
 
         buttonPanel.add(exportButton);
         buttonPanel.add(clearButton);
         return buttonPanel;
+    }
+
+    /**
+     * Performs a search in the log area.
+     */
+    private void performSearch() {
+        // Clear previous highlights
+        logArea.getHighlighter().removeAllHighlights();
+        searchResults.clear();
+        currentSearchResultIndex = -1;
+        currentHighlight = null;
+
+        String searchTerm = searchField.getText().trim();
+        if (searchTerm.isEmpty()) {
+            searchStatusLabel.setText("");
+            return;
+        }
+
+        String text = logArea.getText();
+        int index = 0;
+
+        // Find all occurrences and store their positions
+        while ((index = text.indexOf(searchTerm, index)) != -1) {
+            try {
+                logArea.getHighlighter().addHighlight(index, index + searchTerm.length(), searchHighlightPainter);
+                searchResults.add(index);
+                index += searchTerm.length();
+            } catch (BadLocationException e) {
+                Logger.error("Error highlighting search results", e);
+                break;
+            }
+        }
+
+        // If results found, go to the first one
+        if (!searchResults.isEmpty()) {
+            currentSearchResultIndex = 0;
+            goToSearchResult(currentSearchResultIndex);
+
+            // Update status label with search results count
+            updateSearchStatus();
+        } else {
+            searchStatusLabel.setText("No matches found");
+            searchStatusLabel.setForeground(Color.RED);
+        }
+    }
+
+    /**
+     * Updates the search status label with the current position and total matches.
+     */
+    private void updateSearchStatus() {
+        if (searchResults.isEmpty()) {
+            searchStatusLabel.setText("");
+            return;
+        }
+
+        searchStatusLabel.setText(
+                String.format("%d of %d matches",
+                        currentSearchResultIndex + 1,
+                        searchResults.size())
+        );
+        searchStatusLabel.setForeground(new Color(0, 100, 0)); // Dark green
+    }
+
+    /**
+     * Finds the next search result.
+     */
+    private void findNextResult() {
+        if (searchResults.isEmpty()) {
+            return;
+        }
+
+        currentSearchResultIndex = (currentSearchResultIndex + 1) % searchResults.size();
+        goToSearchResult(currentSearchResultIndex);
+        updateSearchStatus();
+    }
+
+    /**
+     * Finds the previous search result.
+     */
+    private void findPreviousResult() {
+        if (searchResults.isEmpty()) {
+            return;
+        }
+
+        currentSearchResultIndex = (currentSearchResultIndex - 1 + searchResults.size()) % searchResults.size();
+        goToSearchResult(currentSearchResultIndex);
+        updateSearchStatus();
+    }
+
+    /**
+     * Goes to the specified search result and highlights it with a different color.
+     *
+     * @param index the index of the search result
+     */
+    private void goToSearchResult(int index) {
+        if (index >= 0 && index < searchResults.size()) {
+            // Remove previous current highlight if exists
+            if (currentHighlight != null) {
+                logArea.getHighlighter().removeHighlight(currentHighlight);
+                currentHighlight = null;
+            }
+
+            int position = searchResults.get(index);
+            int endPosition = position + searchField.getText().trim().length();
+            logArea.setCaretPosition(position);
+
+            // Add special highlight for current result
+            try {
+                currentHighlight = logArea.getHighlighter().addHighlight(
+                        position, endPosition, currentHighlightPainter);
+            } catch (BadLocationException e) {
+                Logger.error("Error highlighting current search result", e);
+            }
+
+            // Scroll to make the highlighted text visible
+            try {
+                Rectangle rect = logArea.modelToView(position);
+                if (rect != null) {
+                    rect.y -= 30; // Adjust to show some context above the result
+                    rect.height += 60; // Make the visible area taller
+                    logArea.scrollRectToVisible(rect);
+                }
+            } catch (BadLocationException e) {
+                Logger.error("Error scrolling to search result", e);
+            }
+        }
+    }
+
+    /**
+     * Clears the search and removes all highlights.
+     */
+    private void clearSearch() {
+        searchField.setText("");
+        logArea.getHighlighter().removeAllHighlights();
+        searchResults.clear();
+        currentSearchResultIndex = -1;
+        currentHighlight = null;
+        searchStatusLabel.setText("");
     }
 
     /**
@@ -453,16 +665,22 @@ public class ServerGUI extends JFrame {
     }
 
     /**
-     * Updates the memory usage display.
+     * Updates the memory usage display with more accurate information.
      */
     private void updateMemoryUsage() {
         Runtime runtime = Runtime.getRuntime();
-        long totalMemory = runtime.totalMemory();
-        long freeMemory = runtime.freeMemory();
+        long maxMemory = runtime.maxMemory(); // Maximum memory the JVM will attempt to use
+        long totalMemory = runtime.totalMemory(); // Total memory currently allocated to the JVM
+        long freeMemory = runtime.freeMemory(); // Free memory in the allocated pool
+
+        // Used memory is total allocated minus free space in the allocated pool
         long usedMemory = totalMemory - freeMemory;
 
-        int percentage = (int) ((usedMemory * 100) / totalMemory);
-        final String memText = "Memory: " + formatSize(usedMemory) + " / " + formatSize(totalMemory);
+        // Percentage of used memory compared to max available memory
+        int percentage = (int) ((usedMemory * 100) / maxMemory);
+
+        // Format the display text to show used/max memory
+        final String memText = "Memory: " + formatSize(usedMemory) + " / " + formatSize(maxMemory);
 
         SwingUtilities.invokeLater(() -> {
             memoryUsageBar.setValue(percentage);
@@ -521,7 +739,7 @@ public class ServerGUI extends JFrame {
     }
 
     /**
-     * Appends a log message to the log area.
+     * Appends a log message to the log area and preserves search highlights if any.
      *
      * @param level the log level
      * @param message the log message
@@ -540,6 +758,10 @@ public class ServerGUI extends JFrame {
 
             String logEntry = String.format("[%s] %s: %s\n", timestamp, level, message);
 
+            // Store current search term before appending
+            String searchTerm = searchField.getText().trim();
+            boolean hasSearch = !searchTerm.isEmpty() && !searchResults.isEmpty();
+
             // Check if we need to trim the log (to prevent memory issues)
             int docLength = logArea.getDocument().getLength();
             Integer maxLength = (Integer) logArea.getDocument().getProperty("maxLength");
@@ -549,17 +771,55 @@ public class ServerGUI extends JFrame {
                     int cutLength = docLength / 5;
                     logArea.getDocument().remove(0, cutLength);
                     logArea.append("\n... [Log trimmed to prevent memory issues] ...\n\n");
+
+                    // Clear search results as they're now invalid
+                    clearSearch();
+                    hasSearch = false;
                 } catch (Exception e) {
                     // In case of error, just clear the log
                     logArea.setText("");
                     logArea.append("[Log cleared due to size limits]\n");
+
+                    // Clear search results
+                    clearSearch();
+                    hasSearch = false;
                 }
             }
 
             logArea.append(logEntry);
 
-            // Scroll to the bottom
-            logArea.setCaretPosition(logArea.getDocument().getLength());
+            // If we had an active search, check for new matches in the appended text
+            if (hasSearch) {
+                // Save current positions
+                ArrayList<Integer> oldResults = new ArrayList<>(searchResults);
+                int oldIndex = currentSearchResultIndex;
+
+                // Re-run search to update positions
+                performSearch();
+
+                // Restore position if possible
+                if (!searchResults.isEmpty() && oldIndex >= 0 && oldIndex < oldResults.size()) {
+                    // Try to find the closest match to where we were
+                    int oldPosition = oldResults.get(oldIndex);
+                    int bestIndex = 0;
+                    int minDiff = Integer.MAX_VALUE;
+
+                    for (int i = 0; i < searchResults.size(); i++) {
+                        int diff = Math.abs(searchResults.get(i) - oldPosition);
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            bestIndex = i;
+                        }
+                    }
+
+                    currentSearchResultIndex = bestIndex;
+                    goToSearchResult(currentSearchResultIndex);
+                    updateSearchStatus();
+                }
+            } else {
+                // Scroll to the bottom if no active search
+                logArea.setCaretPosition(logArea.getDocument().getLength());
+            }
         });
     }
 

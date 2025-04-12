@@ -547,7 +547,7 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
 
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < meanings.length; i++) {
-                result.append(i + 1).append(". ").append(meanings[i]).append("\n\n");
+                result.append(i + 1).append(". ").append(meanings[i]).append("\n");
             }
 
             searchResultArea.setText(result.toString());

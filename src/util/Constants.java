@@ -10,22 +10,15 @@ public class Constants {
     public static final String DEFAULT_DICTIONARY_FILE = "dictionary.txt";
 
     // Thread pool settings
-    public static final int CORE_POOL_SIZE = 5;
     public static final int MAX_POOL_SIZE = 100;
-    public static final int KEEP_ALIVE_TIME = 60; // seconds
 
     // Connection settings
     public static final int CONNECTION_TIMEOUT = 5000; // milliseconds
-    public static final int MAX_RECONNECT_ATTEMPTS = 5;
-    public static final int RECONNECT_DELAY = 2000; // milliseconds
     public  static final int TOAST_COOLDOWN_MS = 5000; //milliseconds
     // Dictionary file format
-    public static final String WORD_DELIMITER = "\\|";  // Pipe character in regex
-    public static final String WORD_SEPARATOR = "|";    // Pipe character
+    public static final String MEANING_DELIMITER = "    ";  // Pipe character in regex
 
     // GUI constants
-    public static final int WINDOW_WIDTH = 800;
-    public static final int WINDOW_HEIGHT = 600;
     public static final String APP_TITLE = "Dictionary Application";
 
     // Error messages

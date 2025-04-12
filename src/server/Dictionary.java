@@ -74,13 +74,11 @@ public class Dictionary {
                 }
 
                 // If line starts with indentation (spaces), it's a meaning
-                if (line.startsWith("    ")) {
+                if (line.startsWith(Constants.MEANING_DELIMITER)) {
                     // If we have a current word, add this meaning to it
                     if (currentWord != null) {
                         String meaning = line.trim();
-                        if (!meaning.isEmpty()) {
-                            meanings.add(meaning);
-                        }
+                        meanings.add(meaning);
                     }
                 } else {
                     // If we have a word in progress, save it before starting a new one
@@ -137,7 +135,7 @@ public class Dictionary {
 
                 // Write each meaning with indentation
                 for (String meaning : meanings) {
-                    writer.write("    " + meaning);
+                    writer.write(Constants.MEANING_DELIMITER + meaning);
                     writer.newLine();
                 }
             }
