@@ -5,7 +5,9 @@ import java.util.Queue;
 import util.Logger;
 
 /**
- * Custom thread pool implementation for handling client connections.
+ * Custom thread pool implementation for efficiently managing client connections.
+ * Avoids using Java's built-in ExecutorService for better control
+ * and demonstration of thread management.
  */
 public class ThreadPool {
     private final WorkerThread[] threads;
@@ -13,9 +15,7 @@ public class ThreadPool {
     private boolean isShutdown = false;
 
     /**
-     * Creates a new thread pool with the specified number of threads.
-     *
-     * @param maxThreads the maximum number of threads in the pool
+     * Creates a thread pool with the specified number of worker threads.
      */
     public ThreadPool(int maxThreads) {
         this.taskQueue = new LinkedList<>();
@@ -31,10 +31,7 @@ public class ThreadPool {
     }
 
     /**
-     * Submits a task to be executed by the thread pool.
-     *
-     * @param task the task to execute
-     * @throws IllegalStateException if the thread pool is shut down
+     * Submits a task to be executed by a worker thread.
      */
     public synchronized void execute(Runnable task) {
         if (isShutdown) {
@@ -42,7 +39,7 @@ public class ThreadPool {
         }
 
         taskQueue.offer(task);
-        notify(); // Notify a waiting worker thread
+        notify(); // Wake up a waiting worker
 
         Logger.debug("Task submitted to thread pool. Queue size: " + taskQueue.size());
     }
@@ -71,7 +68,7 @@ public class ThreadPool {
 
             while (true) {
                 synchronized (ThreadPool.this) {
-                    // Wait for a task to be available
+                    // Wait for work or shutdown
                     while (taskQueue.isEmpty() && !isShutdown) {
                         try {
                             ThreadPool.this.wait();
@@ -82,7 +79,7 @@ public class ThreadPool {
                         }
                     }
 
-                    // If the pool is shut down and the queue is empty, exit
+                    // Exit if shutdown and no pending tasks
                     if (isShutdown && taskQueue.isEmpty()) {
                         return;
                     }

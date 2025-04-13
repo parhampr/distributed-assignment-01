@@ -12,11 +12,11 @@ import util.Constants;
 import util.Logger;
 
 /**
- * Multithreaded dictionary server that handles client connections.
+ * Multithreaded dictionary server that handles concurrent client connections.
+ * Uses a custom thread pool to manage client connections efficiently.
  */
 public class DictionaryServer {
     private final int port;
-    private final String dictionaryFile;
     private final ThreadPool threadPool;
     private final Dictionary dictionary;
     private ServerSocket serverSocket;
@@ -32,15 +32,12 @@ public class DictionaryServer {
      */
     public DictionaryServer(int port, String dictionaryFile) throws IOException {
         this.port = port;
-        this.dictionaryFile = dictionaryFile;
         this.threadPool = new ThreadPool(Constants.MAX_POOL_SIZE);
         this.dictionary = new Dictionary(dictionaryFile);
     }
 
     /**
      * Starts the server and begins accepting client connections.
-     *
-     * @throws IOException if there's an error starting the server
      */
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
@@ -49,12 +46,14 @@ public class DictionaryServer {
         Logger.info("Dictionary server started on port " + port);
         Logger.info("Loaded dictionary with " + dictionary.size() + " words");
 
-        // Accept client connections
+        // Main server loop - accept and handle client connections
         while (running.get()) {
             try {
                 Socket clientSocket = serverSocket.accept();
                 ClientHandler handler = new ClientHandler(clientSocket, dictionary);
                 activeHandlers.add(handler);
+
+                // Submit handler to thread pool
                 threadPool.execute(() -> {
                     try {
                         handler.run();
@@ -91,7 +90,7 @@ public class DictionaryServer {
         }
         activeHandlers.clear();
 
-        // Add a small delay to allow connections to terminate gracefully
+        // Give connections time to terminate gracefully
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -115,32 +114,17 @@ public class DictionaryServer {
         Logger.info("Dictionary server stopped");
     }
 
-    /**
-     * Gets the dictionary used by the server.
-     *
-     * @return the dictionary
-     */
     public Dictionary getDictionary() {
         return dictionary;
     }
 
-    /**
-     * Gets the number of active client connections.
-     *
-     * @return the number of clients
-     */
     public int getClientCount() {
         return activeHandlers.size();
     }
 
-    /**
-     * Main method to start the server.
-     *
-     * @param args command-line arguments (port, dictionary-file)
-     */
+
     public static void main(String[] args) {
         try {
-            // Setup logging
             Logger.init("dictionary-server.log");
             Logger.setLevel(Logger.Level.INFO);
 
@@ -165,12 +149,8 @@ public class DictionaryServer {
             // Start the server
             final DictionaryServer server = new DictionaryServer(port, dictionaryFile);
 
-            // Add shutdown hook
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                public void run() {
-                    server.stop();
-                }
-            });
+            // Add shutdown hook for clean termination
+            Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
 
             server.start();
         } catch (IOException e) {

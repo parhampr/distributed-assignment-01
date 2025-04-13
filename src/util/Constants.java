@@ -13,8 +13,9 @@ public class Constants {
     public static final int MAX_POOL_SIZE = 100;
 
     // Connection settings
-    public static final int CONNECTION_TIMEOUT = 5000; // milliseconds
+    public static final int CONNECTION_TIMEOUT = 3000; // milliseconds
     public  static final int TOAST_COOLDOWN_MS = 5000; //milliseconds
+    public static final int MAX_DELAY_MS = 10000; // milliseconds
     // Dictionary file format
     public static final String MEANING_DELIMITER = "    ";  // Pipe character in regex
 

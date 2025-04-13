@@ -30,10 +30,7 @@ public class Dictionary {
     }
 
     /**
-     * Tries to find the dictionary file in several locations:
-     * 1. Resources folder
-     * 2. Absolute path
-     * 3. Relative to current directory
+     * Find the dictionary file in system location
      *
      * @param filePath the file path to search for
      * @return the File object if found, null otherwise

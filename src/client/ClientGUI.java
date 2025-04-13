@@ -65,8 +65,6 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
 
     /**
      * Creates a new ClientGUI with the provided connection manager.
-     *
-     * @param connectionManager the connection manager to use
      */
     public ClientGUI(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
@@ -101,7 +99,7 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            // Continue with default look and feel
+            // default look and feel
         }
 
         // Main layout
@@ -127,7 +125,6 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
 
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        // Footer panel with server info
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         footerPanel.setBorder(new CompoundBorder(
                 new MatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY),
@@ -137,10 +134,9 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
 
         mainPanel.add(footerPanel, BorderLayout.SOUTH);
 
-        // Add main panel to frame
         setContentPane(mainPanel);
 
-        // Update UI state based on current connection status
+        // Update UI state
         updateConnectionStatus();
     }
 
@@ -443,6 +439,7 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
 
         // Add action listeners
         getMeaningsButton.addActionListener(e -> getMeanings());
+        updateWordField.addActionListener(e -> getMeanings());
         updateMeaningButton.addActionListener(e -> updateMeaning());
         addMeaningButton.addActionListener(e -> addMeaning());
 
@@ -553,9 +550,11 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
             searchResultArea.setText(result.toString());
             searchResultArea.setCaretPosition(0);
         } else {
-            showToastNotification("Search Result",
-                    "Problem finding \"" + word + "\": " + response.getMessage(),
+            showToastNotification("Search Result: '" + word + "'",
+                    "Problem finding word: " + response.getMessage(),
                     JOptionPane.WARNING_MESSAGE);
+            searchResultArea.setText(null);
+            searchResultArea.setCaretPosition(0);
         }
     }
 
@@ -1055,7 +1054,6 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
                 connectButton.setText("Force Connect");
             }
 
-            // Keep all operation buttons disabled
             searchButton.setEnabled(false);
             addButton.setEnabled(false);
             removeButton.setEnabled(false);
@@ -1063,7 +1061,6 @@ public class ClientGUI extends JFrame implements ConnectionManager.ConnectionLis
             addMeaningButton.setEnabled(false);
             updateMeaningButton.setEnabled(false);
 
-            // Show a toast notification but not too frequently
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastConnectionToastTime > Constants.TOAST_COOLDOWN_MS) {
                 lastConnectionToastTime = currentTime;

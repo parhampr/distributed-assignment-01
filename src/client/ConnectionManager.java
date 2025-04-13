@@ -51,42 +51,25 @@ public class ConnectionManager {
         return serverPort;
     }
 
-    /**
-     * Sets the connection listener.
-     *
-     * @param listener the listener to set
-     */
     public void setConnectionListener(ConnectionListener listener) {
         this.listener = listener;
     }
 
-    /**
-     * Sets the auto-connect flag.
-     *
-     * @param enable true to enable auto-connect, false to disable
-     */
     public void setAutoConnect(boolean enable) {
         autoConnect.set(enable);
 
-        // If we're enabling auto-connect and we're currently disconnected, attempt to connect
+        // Try to connect if auto-connect enabled and currently disconnected
         if (enable && !connected.get() && !reconnecting.get()) {
             startReconnectThread();
         }
     }
 
-    /**
-     * Gets the current auto-connect status.
-     *
-     * @return true if auto-connect is enabled, false otherwise
-     */
     public boolean isAutoConnectEnabled() {
         return autoConnect.get();
     }
 
     /**
-     * Connects to the server.
-     *
-     * @return true if connected successfully, false otherwise
+     * Connects to the server and sets up communication streams.
      */
     public boolean connect() {
         if (connected.get()) {
@@ -99,7 +82,7 @@ public class ConnectionManager {
             socket = new Socket(serverAddress, serverPort);
             socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
 
-            // Important: Create output stream first, then input stream
+            // Create streams - output first, then input
             out = new ObjectOutputStream(socket.getOutputStream());
             out.flush(); // Flush header information
 
@@ -111,7 +94,7 @@ public class ConnectionManager {
                 listener.onConnected();
             }
 
-            // Start heartbeat thread
+            // Start heartbeat to keep connection alive
             startHeartbeatThread();
 
             Logger.info("Connected to server: " + serverAddress + ":" + serverPort);
@@ -124,10 +107,10 @@ public class ConnectionManager {
     }
 
     /**
-     * Starts a thread to send periodic heartbeats to the server.
+     * Sends periodic heartbeats to verify server connection.
      */
     private void startHeartbeatThread() {
-        // Stop any existing heartbeat thread
+        // Stop existing heartbeat thread if running
         if (heartbeatThread != null && heartbeatThread.isAlive()) {
             heartbeatThread.interrupt();
         }
@@ -136,33 +119,30 @@ public class ConnectionManager {
             try {
                 while (connected.get() && !Thread.currentThread().isInterrupted()) {
                     try {
-                        Thread.sleep(10000); // Send heartbeat every 10 seconds
+                        Thread.sleep(10000); // 10-second interval
 
                         if (!connected.get()) {
                             break;
                         }
 
-                        // Check if socket is still valid
                         if (socket == null || socket.isClosed()) {
                             notifyDisconnection();
                             break;
                         }
 
-                        // Send heartbeat request
+                        // Send ping and wait for response
                         Request pingRequest = new Request(Request.OperationType.HEARTBEAT, "_heartbeat_");
 
                         synchronized (this) {
                             if (out != null) {
                                 try {
-                                    socket.setSoTimeout(2000); // Short timeout for heartbeat
+                                    socket.setSoTimeout(1000); // Short timeout for heartbeat
                                     out.writeObject(pingRequest);
                                     out.flush();
                                     out.reset();
 
-                                    // Read response (we don't care about the result, just that it worked)
+                                    // Read response
                                     in.readObject();
-
-                                    // Reset timeout
                                     socket.setSoTimeout(Constants.CONNECTION_TIMEOUT);
                                 } catch (Exception e) {
                                     Logger.debug("Heartbeat failed: " + e.getMessage());
@@ -192,16 +172,16 @@ public class ConnectionManager {
     }
 
     /**
-     * Starts a thread to attempt reconnection.
+     * Attempts to reconnect to server with backoff strategy.
      */
     private void startReconnectThread() {
         if (reconnecting.get()) {
-            return; // Already reconnecting
+            return; // Already trying to reconnect
         }
 
         reconnecting.set(true);
 
-        // Stop any existing reconnect thread
+        // Stop existing reconnect thread if running
         if (reconnectThread != null && reconnectThread.isAlive()) {
             reconnectThread.interrupt();
         }
@@ -228,8 +208,8 @@ public class ConnectionManager {
                         listener.onReconnectFailed();
                     }
 
-                    // Wait before next attempt with increasing delay
-                    int delay = Math.min(3000 * Math.min(attemptCount, 10), 30000);
+                    // Increasing delay with a maximum cap
+                    int delay = Math.min(3000 * Math.min(attemptCount, 10), Constants.MAX_DELAY_MS);
 
                     try {
                         Thread.sleep(delay);
@@ -333,9 +313,6 @@ public class ConnectionManager {
 
     /**
      * Sends a request to the server and waits for a response.
-     *
-     * @param request the request to send
-     * @return the server's response, or null if there was an error
      */
     public synchronized Response sendRequest(Request request) {
         if (!connected.get()) {
@@ -347,7 +324,7 @@ public class ConnectionManager {
 
             out.writeObject(request);
             out.flush();
-            out.reset(); // Reset object cache
+            out.reset();
 
             Object obj = in.readObject();
             if (obj instanceof Response) {
@@ -373,13 +350,16 @@ public class ConnectionManager {
     }
 
     /**
-     * Shutdown the connection manager and release resources.
+     * Shuts down the connection manager and releases resources.
      */
     public void shutdown() {
         disconnect();
         Logger.info("Connection manager shut down");
     }
 
+    /**
+     * Interface for connection state change notifications.
+     */
     public interface ConnectionListener {
         void onConnected();
         void onDisconnected();

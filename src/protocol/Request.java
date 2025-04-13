@@ -1,35 +1,33 @@
 package protocol;
 
 import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * Represents a request from the client to the server.
  */
-public class Request extends Message {
+public class Request implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    // Operation types
-    public static enum OperationType {
+    public enum OperationType {
         SEARCH,         // Look up meanings of a word
         ADD,            // Add a new word with meanings
         REMOVE,         // Remove a word
         ADD_MEANING,    // Add a meaning to an existing word
-        UPDATE_MEANING,  // Update a meaning of an existing word
-        HEARTBEAT
+        UPDATE_MEANING, // Update a meaning of an existing word
+        HEARTBEAT       // Connection keep-alive check
     }
 
     private final OperationType operation;
     private final String word;
     private final String[] meanings;
-    // Used for UPDATE_MEANING operation
     private final String oldMeaning;
 
     /**
-     * Constructor for SEARCH, ADD, and REMOVE operations.
+     * Constructor for SEARCH, ADD, REMOVE, and ADD_MEANING operations.
      */
     public Request(OperationType operation, String word, String... meanings) {
-        super(MessageType.REQUEST);
         this.operation = operation;
         this.word = word;
         this.meanings = meanings;
@@ -40,7 +38,6 @@ public class Request extends Message {
      * Constructor for UPDATE_MEANING operation.
      */
     public Request(OperationType operation, String word, String oldMeaning, String newMeaning) {
-        super(MessageType.REQUEST);
         this.operation = operation;
         this.word = word;
         this.meanings = new String[]{newMeaning};

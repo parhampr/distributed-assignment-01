@@ -27,11 +27,6 @@ java
     A high-level, class-based, object-oriented programming language
     An island of Indonesia
 
-kamal
-    Awesome
-    Amazing
-    Too Good
-
 kamal20
     awesome man
     cool man

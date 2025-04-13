@@ -1,34 +1,34 @@
 package protocol;
 
 import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * Represents a response from the server to the client.
  */
-public class Response extends Message {
+public class Response implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     // Status codes
     public static enum StatusCode {
-        SUCCESS,        // Operation completed successfully
-        WORD_NOT_FOUND, // Word not found in dictionary
-        DUPLICATE_WORD, // Word already exists (for ADD operation)
-        MEANING_EXISTS, // Meaning already exists (for ADD_MEANING)
-        MEANING_NOT_FOUND, // Meaning not found (for UPDATE_MEANING)
-        ERROR           // General error
+        SUCCESS,            // Operation completed successfully
+        WORD_NOT_FOUND,     // Word not found in dictionary
+        DUPLICATE_WORD,     // Word already exists (for ADD operation)
+        MEANING_EXISTS,     // Meaning already exists (for ADD_MEANING)
+        MEANING_NOT_FOUND,  // Meaning not found (for UPDATE_MEANING)
+        ERROR               // General error
     }
 
     private final StatusCode status;
     private final String word;
-    private final String[] meanings;  // For SEARCH operation or error messages
-    private final String message;     // Additional information or error message
+    private final String[] meanings;
+    private final String message; // Additional error message
 
     /**
      * Constructor for responses with meanings (like SEARCH results).
      */
     public Response(StatusCode status, String word, String[] meanings) {
-        super(MessageType.RESPONSE);
         this.status = status;
         this.word = word;
         this.meanings = meanings;
@@ -39,7 +39,6 @@ public class Response extends Message {
      * Constructor for responses with a message.
      */
     public Response(StatusCode status, String word, String message) {
-        super(MessageType.RESPONSE);
         this.status = status;
         this.word = word;
         this.meanings = null;
@@ -50,20 +49,12 @@ public class Response extends Message {
         return status;
     }
 
-    public String getWord() {
-        return word;
-    }
-
     public String[] getMeanings() {
         return meanings;
     }
 
     public String getMessage() {
         return message;
-    }
-
-    public boolean isSuccess() {
-        return status == StatusCode.SUCCESS;
     }
 
     @Override

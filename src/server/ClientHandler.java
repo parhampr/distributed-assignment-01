@@ -11,7 +11,8 @@ import protocol.Response;
 import util.Logger;
 
 /**
- * Handles communication with a client.
+ * Handles communication with a connected client.
+ * Each client gets its own handler running in a separate thread.
  */
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
@@ -21,10 +22,7 @@ public class ClientHandler implements Runnable {
     private volatile boolean running = true;
 
     /**
-     * Creates a new ClientHandler for the specified client socket.
-     *
-     * @param clientSocket the client socket
-     * @param dictionary   the dictionary to use
+     * Creates a handler for a client connection.
      */
     public ClientHandler(Socket clientSocket, Dictionary dictionary) {
         this.clientSocket = clientSocket;
@@ -34,6 +32,7 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
+            // Initialize streams - output, then input
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
 
@@ -41,7 +40,7 @@ public class ClientHandler implements Runnable {
             String clientAddress = clientSocket.getInetAddress().getHostAddress();
             int clientPort = clientSocket.getPort();
 
-            Logger.info(String.format("Client connected: address=%s, port=%d, connectionId=%s", clientAddress, clientPort, connectionId));
+            Logger.info(String.format("Client connected: %s:%d (ID=%s)", clientAddress, clientPort, connectionId));
 
             while (running && !Thread.currentThread().isInterrupted() && !clientSocket.isClosed()) {
                 try {
@@ -49,33 +48,30 @@ public class ClientHandler implements Runnable {
                         continue;
                     }
 
+                    // Log detailed info for non-heartbeat request
                     if (request.getOperation() == Request.OperationType.HEARTBEAT) {
-                        Logger.debug(String.format("Heartbeat received: address=%s, connectionId=%s", clientAddress, connectionId));
+                        Logger.debug(String.format("Heartbeat from %s:%d (ID=%s)", clientAddress, clientPort, connectionId));
                     } else {
-                        Logger.info(String.format("Request received: address=%s, connectionId=%s, operation=%s, details=%s", clientAddress, connectionId, request.getOperation(), request));
+                        Logger.info(String.format("Request from %s:%d - %s - %s", clientAddress, clientPort, request.getOperation(), request));
                     }
 
                     Response response = processRequest(request);
                     out.writeObject(response);
                     out.flush();
 
-                    if (request.getOperation() == Request.OperationType.HEARTBEAT) {
-                        Logger.debug(String.format("Heartbeat response sent: address=%s, connectionId=%s", clientAddress, connectionId));
-                    } else {
-                        Logger.info(String.format("Response sent: address=%s, connectionId=%s, status=%s, details=%s", clientAddress, connectionId, response.getStatus(), response));
+                    if (request.getOperation() != Request.OperationType.HEARTBEAT) {
+                        Logger.info(String.format("Response to %s:%d - %s - %s", clientAddress, clientPort, response.getStatus(), response));
                     }
 
                 } catch (ClassNotFoundException e) {
                     Logger.error(String.format("Invalid message: address=%s, connectionId=%s, error=%s", clientAddress, connectionId, e.getMessage()), e);
                 } catch (EOFException e) {
-                    // Client closed connection normally
                     Logger.info(String.format("Connection closed by client: address=%s, connectionId=%s", clientAddress, connectionId));
                     break;
                 } catch (SocketException e) {
                     Logger.debug(String.format("Socket error: address=%s, connectionId=%s, error=%s", clientAddress, connectionId, e.getMessage()));
                     break;
                 } catch (IOException e) {
-                    // Other IO error
                     Logger.error(String.format("IO error: address=%s, connectionId=%s, error=%s", clientAddress, connectionId, e.getMessage()), e);
                     break;
                 }
@@ -90,10 +86,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * Processes a client request and generates a response.
-     *
-     * @param request the client request
-     * @return the response to send to the client
+     * Processes client requests and generates appropriate responses.
      */
     private Response processRequest(Request request) {
         try {
@@ -226,7 +219,7 @@ public class ClientHandler implements Runnable {
                     // Ignore during shutdown
                 }
 
-                // Only log if we're not in the process of shutting down the server
+                // Only log if not already shutting down
                 if (running) {
                     Logger.info("Client disconnected: " + clientSocket.getInetAddress());
                 }
