@@ -17,7 +17,7 @@ import util.Logger;
  */
 public class Dictionary {
     private final ConcurrentHashMap<String, List<String>> dictionary = new ConcurrentHashMap<>();
-    private File dictionaryFile = new File("resources/dictionary.txt");
+    private File dictionaryFile = new File("dictionary.txt");
 
     /**
      * Creates a new Dictionary and loads data from the specified file.
