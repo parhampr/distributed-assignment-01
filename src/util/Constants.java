@@ -1,3 +1,7 @@
+/**
+ * NAME: KAMAL KUMAR KHATRI
+ * STUDENT_ID: 1534816
+ */
 package util;
 
 /**
@@ -26,8 +30,4 @@ public class Constants {
     public static final String ERR_SERVER_CONNECTION = "Failed to connect to server";
     public static final String ERR_DICTIONARY_FILE = "Failed to load dictionary file";
     public static final String ERR_INVALID_INPUT = "Invalid input parameters";
-
-    private Constants() {
-        // Private constructor to prevent instantiation
-    }
 }

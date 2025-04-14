@@ -1,0 +1,20 @@
+[2025-04-14 16:22:09] INFO: Reconnect attempt 1
+[2025-04-14 16:22:09] INFO: Connecting to server: 100.103.93.7:9999
+[2025-04-14 16:22:09] INFO: Dictionary client started
+[2025-04-14 16:22:09] INFO: Server address: 100.103.93.7
+[2025-04-14 16:22:09] INFO: Server port: 9999
+[2025-04-14 16:22:11] ERROR: Failed to connect to server: Connection refused: connect
+[2025-04-14 16:22:14] INFO: Reconnect attempt 2
+[2025-04-14 16:22:14] INFO: Connecting to server: 100.103.93.7:9999
+[2025-04-14 16:22:16] ERROR: Failed to connect to server: Connection refused: connect
+[2025-04-14 16:22:22] INFO: Reconnect attempt 3
+[2025-04-14 16:22:22] INFO: Connecting to server: 100.103.93.7:9999
+[2025-04-14 16:22:24] ERROR: Failed to connect to server: Connection refused: connect
+[2025-04-14 16:22:33] INFO: Reconnect attempt 4
+[2025-04-14 16:22:33] INFO: Connecting to server: 100.103.93.7:9999
+[2025-04-14 16:22:33] INFO: Connected to server: 100.103.93.7:9999
+[2025-04-14 16:22:33] INFO: Reconnection successful
+[2025-04-14 16:22:51] INFO: Disconnected from server
+[2025-04-14 16:22:54] INFO: Disconnected from server
+[2025-04-14 16:22:54] INFO: Disconnected from server
+[2025-04-14 16:22:54] INFO: Connection manager shut down

@@ -1,3 +1,7 @@
+/**
+ * NAME: KAMAL KUMAR KHATRI
+ * STUDENT_ID: 1534816
+ */
 package util;
 
 import java.io.File;
@@ -11,7 +15,6 @@ import java.util.Date;
  * Simple logging utility for the application.
  */
 public class Logger {
-    // Log levels
     public static enum Level {
         ERROR,
         WARNING,
@@ -23,12 +26,6 @@ public class Logger {
      * Interface for log message handlers.
      */
     public interface LogHandler {
-        /**
-         * Handles a log message.
-         *
-         * @param level the log level
-         * @param message the log message
-         */
         void handleLog(Level level, String message);
     }
 
@@ -40,12 +37,6 @@ public class Logger {
     private static boolean consoleOutput = true;
     private static LogHandler logHandler = null;
 
-    /**
-     * Initialize the logger with a file to write logs to.
-     *
-     * @param logFile the file to write logs to
-     * @throws IOException if the file cannot be opened for writing
-     */
     public static void init(String logFile) throws IOException {
         if (logWriter != null) {
             logWriter.close();
@@ -64,66 +55,30 @@ public class Logger {
         logWriter = new PrintWriter(new FileWriter(file, true), true);
     }
 
-    /**
-     * Set the current log level.
-     *
-     * @param level the log level to set
-     */
     public static void setLevel(Level level) {
         currentLevel = level;
     }
 
-    /**
-     * Set whether to output logs to the console.
-     *
-     * @param enable true to enable console output, false to disable
-     */
     public static void setConsoleOutput(boolean enable) {
         consoleOutput = enable;
     }
 
-    /**
-     * Set a log handler to receive log messages.
-     *
-     * @param handler the log handler to set
-     */
     public static void setLogHandler(LogHandler handler) {
         logHandler = handler;
     }
 
-    /**
-     * Log a message at the INFO level.
-     *
-     * @param message the message to log
-     */
     public static void info(String message) {
         log(Level.INFO, message);
     }
 
-    /**
-     * Log a message at the WARNING level.
-     *
-     * @param message the message to log
-     */
     public static void warning(String message) {
         log(Level.WARNING, message);
     }
 
-    /**
-     * Log a message at the ERROR level.
-     *
-     * @param message the message to log
-     */
     public static void error(String message) {
         log(Level.ERROR, message);
     }
 
-    /**
-     * Log a message at the ERROR level with an exception.
-     *
-     * @param message the message to log
-     * @param e the exception to log
-     */
     public static void error(String message, Exception e) {
         log(Level.ERROR, message + ": " + e.getMessage());
         if (currentLevel == Level.DEBUG) {
@@ -131,21 +86,10 @@ public class Logger {
         }
     }
 
-    /**
-     * Log a message at the DEBUG level.
-     *
-     * @param message the message to log
-     */
     public static void debug(String message) {
         log(Level.DEBUG, message);
     }
 
-    /**
-     * Log a message at the specified level.
-     *
-     * @param level the log level
-     * @param message the message to log
-     */
     private static void log(Level level, String message) {
         if (level.ordinal() > currentLevel.ordinal()) {
             return;
@@ -172,9 +116,6 @@ public class Logger {
         }
     }
 
-    /**
-     * Close the logger and release resources.
-     */
     public static void close() {
         if (logWriter != null) {
             logWriter.close();
